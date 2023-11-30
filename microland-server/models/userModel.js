@@ -16,15 +16,14 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    role: {
-        type: String,
-        enum: ['customer', 'admin'],
-        default: 'customer',
+    isAdmin: {
+        type: Boolean,
+        default: false
     },
-    token: {
-        type: String,
-        // required: true,
-    }
+    emailConfirmed: {
+        type: Boolean,
+        default: false
+    },
 });
 
 export default mongoose.model('User', userSchema);
