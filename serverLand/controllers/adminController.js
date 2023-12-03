@@ -52,6 +52,9 @@ async function DeleteProd(req, res) {
     }
 };
 
+
+// FIX: think twice if you want to add this to your app
+
 // make  user an admin (not sure if we need it or not)
 async function MakeAdmin(req, res) {
     try {
@@ -61,6 +64,8 @@ async function MakeAdmin(req, res) {
         res.status(500).json({ error });
     }
 };
+// FIX: think twice if you want to add this to your app
+
 // delete a user
 async function DeleteUser(req, res) {
     try {
