@@ -6,7 +6,7 @@ import { matchedData, validationResult } from "express-validator";
 
 // @desc    user login
 // @path    POST /login
-// @access  public
+// @access  private
 async function akka(req, res) {
     if (req.user) {
         res
