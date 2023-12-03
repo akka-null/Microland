@@ -1,12 +1,12 @@
 {
-  "name": "microland-server",
+  "name": "serverLand",
   "version": "1.0.0",
   "description": "backend side of the site",
   "main": "app.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon microland-server/app.js"
+    "dev": "nodemon serverLand/app.js"
   },
   "author": "akka",
   "license": "MIT",
