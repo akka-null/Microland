@@ -6,6 +6,7 @@ const app = express();
 import mongoose from "mongoose";
 
 // depends
+import cors from "cors";
 import helmet from "helmet";
 import bodyParser from "body-parser";
 import logger from "morgan";
@@ -18,6 +19,7 @@ import authRoute from "./routes/authRoute.js";
 
 // middlewares
 app.use(helmet());
+app.use(cors());
 app.use(logger("dev"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -29,14 +31,14 @@ app.use(shopRoute);
 app.use(authRoute);
 
 app.get("/", (req, res) => {
-  res.status(200).json({ msg: "hey akka" });
+    res.status(200).json({ msg: "hey akka" });
 });
 
 mongoose
-  .connect(process.env.URI)
-  .then((_connection) => {
-    app.listen(PORT, () => {
-      console.log(`your app is listenning or port:${PORT}...`);
-    });
-  })
-  .catch((err) => console.log(err));
+    .connect(process.env.URI)
+    .then((_connection) => {
+        app.listen(PORT, () => {
+            console.log(`your app is listenning or port:${PORT}...`);
+        });
+    })
+    .catch((err) => console.log(err));
