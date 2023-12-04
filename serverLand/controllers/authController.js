@@ -104,14 +104,14 @@ async function login(req, res) {
         }
         // found a user  create an httpONly cookie
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_TOKEN, {
-            expiresIn: "2m",
+            expiresIn: "5m",
         });
         res.cookie("loginCookie", token, {
             httpOnly: true,
             sameSite: "strict",
             secure: process.env.NODE_ENV !== "development", // we are in dev so dev !== dev will give false
             // NOTE: if you don't set the maxAge it will a session coookie
-            maxAge: 1000 * 60 * 2, // ms i want to give it 2 min
+            maxAge: 1000 * 60 * 5, // ms i want to give it 2 min
         });
 
         res.status(200).json({ msg: "login succesfully!" });
