@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 
 // depends
 import cors from "cors";
+// import csrfProtection from "csurf";
 import helmet from "helmet";
 import bodyParser from "body-parser";
 import logger from "morgan";
@@ -19,6 +20,9 @@ import authRoute from "./routes/authRoute.js";
 
 // middlewares
 app.use(helmet());
+// TODO: read if you should use csrf like this 
+// app.use(csrfProtection()); //WARN: in microlan case i do not think will ever need csrf protection 
+// TODO: read if you should use cors like this or make our api be consumed only the frontend app
 app.use(cors());
 app.use(logger("dev"));
 app.use(bodyParser.urlencoded({ extended: true }));

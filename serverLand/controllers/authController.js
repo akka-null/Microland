@@ -29,7 +29,8 @@ async function register(req, res) {
     if (!errorResult.isEmpty()) {
         return res
             .status(400)
-            .json({ ValidationError: "All Fields Required", errorResult }); // 400 bad request
+            .json({ error: "All Fields Are Required" });
+        // .json({ ValidationError: "All Fields Required", errorResult }); // 400 bad request
     }
     try {
         const hashedPassword = await bcrypt.hash(password, 12);
@@ -60,7 +61,8 @@ async function register(req, res) {
         const info = transporter.sendMail(mailOptions);
         res.send("Email sent successfully!");
     } catch (error) {
-        res.status(500).json({ Error: "Something Went Wrong", error });
+        console.log(err);
+        res.status(500).json({ error: "Something Went Wrong", err });
     }
 }
 
