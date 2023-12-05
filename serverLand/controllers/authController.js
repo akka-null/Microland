@@ -1,3 +1,4 @@
+// FIX: you are inconsitant wiht your error msg some time ERROR some time Error and the other time error fix it 
 import { mailOptions, transporter } from "../utils/sendMail.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -94,12 +95,12 @@ async function login(req, res) {
     try {
         const user = await User.findOne({ email: email });
         if (!user || !(await bcrypt.compare(password, user.password))) {
-            return res.status(400).json({ Error: "Email or Password incorect" });
+            return res.status(400).json({ error: "Email or Password incorect" });
         }
         // found user and will check if did manage to confirm his email
         if (!user.emailConfirmed) {
             return res
-                .status(400)
+                .status(403)
                 .json({ error: "Please confirm your email addresss to login!" });
         }
         // found a user  create an httpONly cookie
@@ -116,7 +117,7 @@ async function login(req, res) {
 
         res.status(200).json({ msg: "login succesfully!" });
     } catch (error) {
-        res.status(500).json({ Error: "Something Went Wrong" });
+        res.status(500).json({ error: "Something Went Wrong" });
     }
 }
 
@@ -183,7 +184,7 @@ async function updatePass(req, res) {
         const hashedPass = await bcrypt.hash(password, 12);
         await User.findByIdAndUpdate(req.params.userId, { password: hashedPass });
         res.status(200).json({ msg: "password updated" });
-    } catch (error) {
+    } catch (err) {
         res.status(500).json({ error: err });
     }
 }
