@@ -115,9 +115,8 @@ async function login(req, res) {
             secure: process.env.NODE_ENV !== "development", // we are in dev so dev !== dev will give false
             // NOTE: if you don't set the maxAge it will a session coookie
             maxAge: 1000 * 60 * 5, // ms i want to give it 2 min
-        });
-
-        res.status(200).json({ msg: "login succesfully!" });
+        })
+        .status(200).json({ msg: "login succesfully!" });
     } catch (error) {
         res.status(500).json({ error: "Something Went Wrong" });
     }
@@ -131,9 +130,11 @@ async function logout(req, res) {
         res.clearCookie("loginCookie");
         res.status(200).json({ msg: "logout seccessfull" });
     } else {
-        res.status(401).send("Unauthorized");
+        res.status(401).json({ error: "Unauthorized" });
     }
 }
+
+// WARN: rebuild and rethink the forget password feature
 
 // @desc    user login
 // @path    POST /login

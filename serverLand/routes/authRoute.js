@@ -8,7 +8,7 @@ import isLoggedIn from "../middlewares/loggedIn.js";
 const router = Router();
 
 // trying a protected route and must be logged in to reach it 
-router.post("/akka", isLoggedIn, authController.akka);
+router.use("/akka", isLoggedIn, authController.akka);
 
 // signup  || register
 router.post(

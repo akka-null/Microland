@@ -23,7 +23,7 @@ app.use(helmet());
 // TODO: read if you should use csrf like this 
 // app.use(csrfProtection()); //WARN: in microlan case i do not think will ever need csrf protection 
 // TODO: read if you should use cors like this or make our api be consumed only the frontend app
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(logger("dev"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

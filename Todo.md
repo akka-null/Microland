@@ -18,6 +18,8 @@ a webapp for microland inoformatique
 - [ ] order Schema
 
 - [ ] cors errors
+- [ ] csrf protection
+- [ ] set number of request are alowed on certain routes
 - [ ] helmetJS for settting security headers
 - [ ] use Oauth to login with google account
 - [ ] jwt tokens 

@@ -4,10 +4,10 @@ import { RouterLink, RouterView } from 'vue-router'
 
 <template>
     <header>
-        <div class="logo">
+        <!-- <div class="logo">
             <a href="/"><img src="../microland-removebg.png" alt="Microland Informatique"></a>
-            <!-- <h4>Microland Informatique</h4> -->
-        </div>
+            <h4>Microland Informatique</h4>
+        </div> -->
     </header>
     <nav>
         <RouterLink to="/login">login</RouterLink>
