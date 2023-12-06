@@ -26,46 +26,67 @@ a webapp for microland inoformatique
 - [ ] product Schema
 - [ ] Routes
 - [ ] middlewares is auth, is admin
-
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
-- [ ] 
 ## Schema 
-
 ### user 
 - username
 - email
 - password
-- role
+- isAdmine
 ### product 
 - title
 - quantity
 - price 
-- catigory
+- description
+- category
+#### type
+- Desktop
+- laptop
+- tablette
+- AllInOne
+#### parts
+- MOB
+    -intel
+    -amd
+- GPU
+    -intel
+    -amd
+    -nvidia
+- CPU
+    -intel
+    -amd
+- RAM
+- PSU
+- CASE
+- Cooling
+    -air
+    -water
+    - fans
+    - thermal paste
+- Storage
+    -sdd
+    -hdd
+#### periphrals
+- monitor
+- mouse
+- mousepad
+- keyboard
+- headset
+# routes 
 
-## gpu
-## ram
-## routes 
-top route /product-category/
-                           / oridnateurs
-                           / composents
-                           / oridnateurs
-                           / oridnateurs
+top route /product/
+                  / computer/
+                            /Desktop
+                            /laptop
+                            /tabblet
+                            /allinone
+                  / parts/
+                        /mob
+                        /mob
+                        /mob
+                        /mob
+                  / oridnateurs/
+                  / oridnateurs/
+                  /accessoires/
 
 /product-category/ordinateurs/
 /product-category/ordinateurs/pc-de-marque/

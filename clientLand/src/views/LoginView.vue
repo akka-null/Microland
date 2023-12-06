@@ -1,14 +1,14 @@
 <template>
     <div class="login-page">
-        <form @submit.prevent="login">
+        <!-- <form @submit.prevent="login"> -->
             <label for="email">E-mail:</label>
             <input type="text" id="email" v-model="email" placeholder="email" required>
 
             <label for="password">Password:</label>
             <input type="password" id="password" v-model="password" placeholder="password" required>
 
-            <button type="submit">Login</button>
-        </form>
+            <button type="submit" @click="login">Login</button>
+        <!-- </form> -->
     </div>
     <div>
         <button type="submit" @click="akka">akka</button>
@@ -35,7 +35,10 @@ export default {
             try {
                 const FormData = { email: email.value, password: password.value };
                 // const res = await axios.post('http://localhost:3030/login', { withCredentials: true }, FormData);
+                alert('yo');
+                axios.defaults.withCredentials = true;
                 const res = await axios.post('http://localhost:3030/login', FormData, {withCredentials: true});
+                alert(res.data);
                 console.log(res.data);
 
             } catch (error) {
@@ -48,6 +51,7 @@ export default {
         async akka() {
             try {
                 // axios.defaults.withCredentials = true;
+                alert('yo');
                 axios.defaults.withCredentials = true;
                 const res = await axios.get('http://localhost:3030/akka');
                 console.log(res.data);
