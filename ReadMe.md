@@ -73,39 +73,39 @@ a webapp for microland inoformatique
 - headset
 # routes 
 
-top route /product/
-                  / computer/
-                            /Desktop
-                            /laptop
-                            /tabblet
-                            /allinone
-                  / parts/
-                        /mob
-                            /intel
-                            /amd
-                        /gpu
-                            /intel
-                            /amd
-                        /cpu
-                            /intel
-                            /amd
-                        /ram
-                        /psu
-                        /case
-                        /storage
-                            /ssd
-                            /hdd
-                        /cooling
-                            /air
-                            /water
-                            /fan
-                            /thermalpaste
-                  / peripherals/
-                            /monitor
-                            /mouse
-                            /keyboard
-                            /headset
-                            /mousepad
+- http://localhost/product/
+-                          /computer/
+-                                 /Desktop
+-                                 /laptop
+-                                 /tabblet
+-                                 /allinone
+-                       /parts/
+-                             /mob
+-                                 /intel
+-                                 /amd
+-                             /gpu
+-                                 /intel
+-                                 /amd
+-                             /cpu
+-                                 /intel
+-                                 /amd
+-                             /ram
+-                             /psu
+-                             /case
+-                             /storage
+-                                     /ssd
+-                                     /hdd
+-                             /cooling
+-                                     /air
+-                                     /water
+-                                     /fan
+-                                     /thermalpaste
+-                             /peripherals/
+-                                         /monitor
+-                                         /mouse
+-                                         /keyboard
+-                                         /headset
+-                                         /mousepad
 
 
 /product-category/accessoires-et-reseaux/
