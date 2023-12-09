@@ -81,49 +81,31 @@ top route /product/
                             /allinone
                   / parts/
                         /mob
-                        /mob
-                        /mob
-                        /mob
-                  / oridnateurs/
-                  / oridnateurs/
-                  /accessoires/
-
-/product-category/ordinateurs/
-/product-category/ordinateurs/pc-de-marque/
-/product-category/ordinateurs/laptop/
-/product-category/ordinateurs/all-in-one/
-/product-category/ordinateurs/tablettes/
-/product-category/ordinateurs/pc-gamer/
-
-/product-category/composents/alimentation/
-/product-category/composents/boitiers/
-/product-category/composents/processeur/
-/product-category/composents/carte-mere/
-/product-category/composents/memoires/
-/product-category/composents/vga/
-/product-category/composents/disque-dur/
-/product-category/composents/ssd/
-
-/product-category/composents/pate-thermique/
-/product-category/composants/moniteurs/
-/product-category/composents/refroidisseur-boitier/
-/product-category/composents/eclairage-PC/
-/product-category/ordinateurs/#
-/product-category/peripheriques-pc/pc-de-bureau/Claviers/
-/product-category/peripheriques-pc/pc-de-bureau/souris/
-/product-category/peripheriques-pc/pc-de-bureau/Tapis-De-Souris/
-/product-category/peripheriques-pc/pc-de-bureau/casques/
-/product-category/peripheriques-pc/pc-de-bureau/haut-parleurs/
-/product-category/peripheriques-pc/pc-de-bureau/Microphones/
-/product-category/peripheriques-pc/pc-de-bureau/Manettes/
-/product-category/peripheriques-pc/peripheques-pc-de-bureau/webcam/
-/product-category/peripheriques-pc/pc-de-bureau/casque-realite-virtuelle/
-/product-category/peripheriques-pc-portable/memoire-ram-pour-pc-portable/
-/product-category/peripheriques-pc/peripheriques-laptop/disque-dur-pc-portable/
-/product-category/peripheriques-pc-portable/Chargeurs/
-/product-category/peripheriques-pc-portable/sac-laptop/
-/product-category/peripheriques-pc-portable/batteries/
-/product-category/peripheriques-pc-portable/ventilateurs-pc-portable/
+                            /intel
+                            /amd
+                        /gpu
+                            /intel
+                            /amd
+                        /cpu
+                            /intel
+                            /amd
+                        /ram
+                        /psu
+                        /case
+                        /storage
+                            /ssd
+                            /hdd
+                        /cooling
+                            /air
+                            /water
+                            /fan
+                            /thermalpaste
+                  / peripherals/
+                            /monitor
+                            /mouse
+                            /keyboard
+                            /headset
+                            /mousepad
 
 
 /product-category/accessoires-et-reseaux/

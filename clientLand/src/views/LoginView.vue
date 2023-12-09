@@ -35,10 +35,8 @@ export default {
             try {
                 const FormData = { email: email.value, password: password.value };
                 // const res = await axios.post('http://localhost:3030/login', { withCredentials: true }, FormData);
-                alert('yo');
-                axios.defaults.withCredentials = true;
+                // axios.defaults.withCredentials = true;
                 const res = await axios.post('http://localhost:3030/login', FormData, {withCredentials: true});
-                alert(res.data);
                 console.log(res.data);
 
             } catch (error) {
@@ -51,9 +49,7 @@ export default {
         async akka() {
             try {
                 // axios.defaults.withCredentials = true;
-                alert('yo');
-                axios.defaults.withCredentials = true;
-                const res = await axios.get('http://localhost:3030/akka');
+                const res = await axios.get('http://localhost:3030/akka', {withCredentials: true});
                 console.log(res.data);
 
             } catch (error) {

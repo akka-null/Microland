@@ -1,10 +1,11 @@
 <template>
     <div class="shop">
-        <Card class="card" v-for="prod in products" :key="prod.id" :product="prod"/>
+        <Card class="card" v-for="prod in products" :key="prod._id" :product="prod" />
     </div>
 </template>
 <script>
 import Card from '../components/Card.vue';
+import axios from 'axios';
 export default {
     name: 'shop',
     components: {
@@ -12,31 +13,15 @@ export default {
     },
     data() {
         return {
-            products: [
-                {
-                    id: 123123123,
-                    title: 'GPU 980',
-                    price: 2123
-                },
-                {
-                    id: 123123123,
-                    title: 'GPU 980',
-                    price: 2123
-                },
-                {
-                    id: 123123123,
-                    title: 'GPU 980',
-                    price: 2123
-                },
-                {
-                    id: 123123123,
-                    title: 'GPU 980',
-                    price: 2123
-                },
-            ]
+            products: null
         }
     },
-
+    created() {
+        axios.get('http://localhost:3030/products')
+            .then(res => {
+                this.products = res.data;
+            });
+    }
 }
 </script>
 <style>
@@ -45,6 +30,7 @@ export default {
     flex-direction: column;
     align-items: center;
 }
+
 @media (min-width: 1024px) {
     .shop {
         min-height: 100vh;
