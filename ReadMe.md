@@ -73,40 +73,43 @@ a webapp for microland inoformatique
 - headset
 # routes 
 
-- http://localhost/product/
--                          /computer/
--                                 /Desktop
--                                 /laptop
--                                 /tabblet
--                                 /allinone
--                       /parts/
--                             /mob
--                                 /intel
--                                 /amd
--                             /gpu
--                                 /intel
--                                 /amd
--                             /cpu
--                                 /intel
--                                 /amd
--                             /ram
--                             /psu
--                             /case
--                             /storage
--                                     /ssd
--                                     /hdd
--                             /cooling
--                                     /air
--                                     /water
--                                     /fan
--                                     /thermalpaste
--                             /peripherals/
--                                         /monitor
--                                         /mouse
--                                         /keyboard
--                                         /headset
--                                         /mousepad
+``` bash
+http://localhost/product/
+                        /computer/
+                                 /Desktop
+                                 /laptop
+                                 /tabblet
+                                 /allinone
+                       /parts/
+                             /mob
+                                 /intel
+                                 /amd
+                             /gpu
+                                 /intel
+                                 /amd
+                             /cpu
+                                 /intel
+                                 /amd
+                             /ram
+                             /psu
+                             /case
+                             /storage
+                                     /ssd
+                                     /hdd
+                             /cooling
+                                     /air
+                                     /water
+                                     /fan
+                                     /thermalpaste
+                             /peripherals/
+                                         /monitor
+                                         /mouse
+                                         /keyboard
+                                         /headset
+                                         /mousepad
 
+
+```
 
 /product-category/accessoires-et-reseaux/
 /product-category/accessoires-et-reseaux/adaptateurs/adaptateurs-affichage/
