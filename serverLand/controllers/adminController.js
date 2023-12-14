@@ -9,16 +9,25 @@ async function getDashBoard(req, res) {
 async function addProd(req, res) {
     try {
         console.time("adding product");
-        const { title, price, quantity, image, description, condition } = req.body;
-        const product = await Product.insertMany({
-            title,
-            price,
-            quantity,
-            image,
-            description,
-            condition,
-        });
-        res.status(201).json({ product });
+        // console.log('akka');
+        // console.log(req.body);
+        // console.log('akka');
+        // const { title, price, quantity, image, description, condition } = req.body;
+        // const data [{ title, price, quantity, image, description, condition }, ...] = req.body;
+        // console.log('akka');
+        // console.log(data);
+        // console.log('akka');
+        // const product = await Product.insertMany({
+        //     title,
+        //     price,
+        //     quantity,
+        //     image,
+        //     description,
+        //     condition,
+        // });
+        // res.status(201).json({ product });
+        const prods = await Product.insertMany(req.body);
+        res.status(201).json({ prods });
         console.timeEnd("adding product");
     } catch (error) {
         res.json({ "error": error });
@@ -71,7 +80,7 @@ async function DeleteUser(req, res) {
     try {
         const deleted = await User.findByIdAndDelete(req.params.userId);
         if (!deleted) {
-        res.status(400).json({ "msg": `user does not exist` });
+            res.status(400).json({ "msg": `user does not exist` });
         }
         res.status(200).json({ "msg": `${deleted.username} has been deleted` });
     } catch (error) {
