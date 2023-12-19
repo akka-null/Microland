@@ -29,8 +29,8 @@ async function register(req, res) {
     if (!errorResult.isEmpty()) {
         return res
             .status(400)
-            .json({ error: "All Fields Are Required" });
-        // .json({ ValidationError: "All Fields Required", errorResult }); // 400 bad request
+            // .json({ error: "All Fields Are Required" });
+        .json({ ValidationError: "All Fields Required", errorResult }); // 400 bad request
     }
     try {
         const hashedPassword = await bcrypt.hash(password, 12);

@@ -1,4 +1,4 @@
-import Product from "../models/productModel.js";
+import { Desktop, Product } from "../models/productModel.js";
 import User from "../models/userModel.js";
 
 // get /admin/ to get the admin dashbaord
@@ -26,8 +26,18 @@ async function addProd(req, res) {
         //     condition,
         // });
         // res.status(201).json({ product });
-        const prods = await Product.insertMany(req.body);
-        res.status(201).json({ prods });
+        // const prods = await Product.insertMany(req.body);
+        // res.status(201).json({ prods });
+        console.log(req.body);
+        const { productCategory, ...data } = req.body;
+        console.log(data);
+        console.log(productCategory);
+        const prod = new Product({ ...data, productCategory });
+        const product = await prod.save();
+        console.log(product);
+        const ff = await Desktop.find();
+        console.log(ff);
+        res.status(201).json({ msg: "hey", ff });
         console.timeEnd("adding product");
     } catch (error) {
         res.json({ "error": error });

@@ -76,7 +76,7 @@ router.post(
 // updating passsword
 router.get("/reset/:passToken", authController.resetPass);
 
-// udpate password
+// update password
 router.post("/updatePass/:userId",
     body("password", "please use a password at least with 5 characters").isLength(
         { min: 5 }

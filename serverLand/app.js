@@ -25,7 +25,7 @@ app.use(helmet());
 // TODO: read if you should use cors like this or make our api be consumed only the frontend app
 app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(logger("dev"));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
