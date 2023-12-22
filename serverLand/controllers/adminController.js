@@ -9,14 +9,7 @@ async function getDashBoard(req, res) {
 async function addProd(req, res) {
     try {
         console.time("adding product");
-        // console.log('akka');
-        // console.log(req.body);
-        // console.log('akka');
         // const { title, price, quantity, image, description, condition } = req.body;
-        // const data [{ title, price, quantity, image, description, condition }, ...] = req.body;
-        // console.log('akka');
-        // console.log(data);
-        // console.log('akka');
         // const product = await Product.insertMany({
         //     title,
         //     price,
@@ -28,19 +21,20 @@ async function addProd(req, res) {
         // res.status(201).json({ product });
         // const prods = await Product.insertMany(req.body);
         // res.status(201).json({ prods });
-        console.log(req.body);
         const { productCategory, ...data } = req.body;
         console.log(data);
         console.log(productCategory);
-        const prod = new Product({ ...data, productCategory });
+        console.log(req.body);
+
+        const prod = new Product(req.body);
         const product = await prod.save();
         console.log(product);
-        const ff = await Desktop.find();
-        console.log(ff);
-        res.status(201).json({ msg: "hey", ff });
-        console.timeEnd("adding product");
-    } catch (error) {
-        res.json({ "error": error });
+        res.status(201).json({ product });
+        // const ff = await Desktop.find();
+        // console.log(ff);
+        // res.status(201).json({ msg: "hey", ff });
+    } catch (err) {
+        res.json({ err });
     }
 }
 

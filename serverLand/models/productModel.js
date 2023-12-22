@@ -79,11 +79,28 @@ const tabletSchema = new Schema({
     battry: String,
     storage: String,
 });
+
+// pc parts 
+const gpuSchema = new Schema({
+    vram: String,
+});
+const cpuSchema = new Schema({
+});
 const Product = mongoose.model('Product', productSchema);
+
 const Desktop = Product.discriminator('Desktop', desktopSchema);
+const Laptop = Product.discriminator('Laptop', laptopSchema );
+const Allinone = Product.discriminator('AllInOne', allinoneSchema);
+const Tablet = Product.discriminator('Tablet', tabletSchema);
+
+const Gpu = Product.discriminator('Gpu', gpuSchema);
 
 export {
     Product,
-    Desktop
+    Desktop,
+    Laptop,
+    Allinone,
+    Tablet,
+    Gpu
 }
 // export default mongoose.model("Product", productSchema);
