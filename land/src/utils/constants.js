@@ -1,1 +1,0 @@
-export const logo = 'https://scontent.forn3-1.fna.fbcdn.net/v/t39.30808-6/220427029_368426091289816_7283081303843211820_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=efb6e6&_nc_eui2=AeFYKk940RlJmMp-cMmG6AAY1wCsw5qn4mfXAKzDmqfiZ0TQyPGb1lgKB-Kac6JIzqaUyxuz1coTo9K4FoGT1OYy&_nc_ohc=JrMWbVkwLxQAX-lmvqq&_nc_ht=scontent.forn3-1.fna&oh=00_AfAl9o-RTZgUcFD1vXVaHiy5TzizmYlbDYQfif6O_0KTEw&oe=656D972F'
