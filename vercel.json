@@ -1,5 +1,5 @@
 {
     "version": 2,
-    "builds": [{"src": "./", "use": "@vercel/node"}],
-    "routes": [{"src": "/(.*)", "dest":"/serverLand/app.js"}]
+    "builds": [{"src": "serverLand/app.js", "use": "@vercel/node"}],
+    "routes": [{"src": "/(.*)", "dest":"serverLand/app.js"}]
 }
