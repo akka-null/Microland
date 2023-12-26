@@ -1,8 +1,8 @@
+// FIX: make sure all the routes all working (here and in postman)
 import { Router } from "express";
 import { body } from "express-validator";
 import authController from "../controllers/authController.js";
 import User from "../models/userModel.js";
-import loggedin from "../middlewares/loggedIn.js";
 import isLoggedIn from "../middlewares/loggedIn.js";
 
 const router = Router();

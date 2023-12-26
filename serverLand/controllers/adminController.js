@@ -8,45 +8,13 @@ async function getDashBoard(req, res) {
 // post /admin/ => adding a product
 async function addProd(req, res) {
     try {
-        console.time("adding product");
-
-        // const { title, price, quantity, image, description, condition } = req.body;
-        // const product = await Product.insertMany({
-        //     title,
-        //     price,
-        //     quantity,
-        //     image,
-        //     description,
-        //     condition,
-        // });
-        // res.status(201).json({ product });
-        // const prods = await Product.insertMany(req.body);
-        // res.status(201).json({ prods });
-
-        // second aproach
-        // const { category, subCategory, ...data } = req.body;
-        // console.log(data);
-        // console.log(category);
-        // console.log(subCategory);
-        // res.json({ data, category, subCategory  });
-
-        // thrid apraoch the last one i think 
-
-        const { category, subCategory, ...data } = req.body;
+        const { type, category, ...data } = req.body;
+        console.log(type);
         console.log(category);
-        console.log(subCategory);
         console.log(data);
-        const prod = await Product.insertMany({ category, subCategory, ...data });
+        const prod = await Product.insertMany({ type, category, ...data });
         res.status(201).json({ prod });
 
-
-
-        // const prod = new Product(req.body);
-        // const product = await prod.save();
-        // res.status(201).json({ product });
-        // const ff = await Desktop.find();
-        // console.log(ff);
-        // res.status(201).json({ msg: "hey", ff });
     } catch (err) {
         res.json({ err });
     }
@@ -55,15 +23,8 @@ async function addProd(req, res) {
 // udpate product
 async function PatchProd(req, res) {
     try {
-        const { title, price, quantity, image, description, condition } = req.body;
-        await Product.findByIdAndUpdate(req.params.prodId, {
-            title,
-            price,
-            quantity,
-            image,
-            description,
-            condition,
-        });
+        const { prodId, ...update } = req.body;
+        await Product.findByIdAndUpdate(prodId, update);
         res.status(201).json({ "msg": "product updated" });
     } catch (error) {
         res.json({ "error": error });

@@ -1,3 +1,4 @@
+// FIX: make sure all the routes all working (here and in postman)
 import { Router } from "express";
 const router = Router();
 import adminController from "../controllers/adminController.js";

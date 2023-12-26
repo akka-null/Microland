@@ -1,5 +1,3 @@
-// FIX: look if you can nest discriminator
-//      or you should use index for pctype, parts, perephrals, accessory and discriminator for the nested category
 import { Allinone, Desktop, Gpu, Laptop, Product, Tablet } from "../models/productModel.js";
 // getting all the products
 async function getProducts(req, res) {
@@ -29,62 +27,31 @@ async function getProductById(req, res) {
 
 // getting the products by the category
 
-// getting all the computers
-async function getComputerByCategory(req, res) {
-    const { computer } = req.params;
+//  get product by type: Computer, Part, Peripheral, accessory
+async function getProductByType(req, res) {
+    const { productType } = req.params;
     try {
-        switch (computer) {
-            case 'Desktop':
-                const desktop = await Product.find({ "category": "Desktop" }).explain('excutionStats');
-                // const desktop = await Desktop.find().explain('excutionStats');
-                res.json(desktop);
-                break;
-
-            case 'Laptop':
-                const laptop = await Laptop.find();
-                res.json(laptop);
-                break;
-            case 'AllInOne':
-                const allinone = await Allinone.find();
-                res.json(allinone);
-                break;
-            case 'Tablet':
-                const tablet = await Tablet.find();
-                res.json(tablet);
-                break;
-
-            default:
-                res.status(400).json({ error: "oops what are you looking for " });
-                break;
-        }
-
+        const prod = await Product.find({ type: productType });
+        res.json(prod);
 
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: "Something went wrong" });
-
     }
 };
 
-// getting all the parts
-async function getpartByName(req, res) {
-    const { partName } = req.params;
+//  get product by category: Gpu, Desktop, Cpu, etc..
+async function getProductByCategory(req, res) {
+    const { productType, productCategory } = req.params;
     try {
-        switch (partName) {
-            case 'Gpu':
-                const gpu = await Gpu.find();
-                res.json(gpu);
-                break;
+        // FIX: check if this apraoch faster or is it better touse them boath
+        // const prod = await Product.find({ category: productCategory });
+        const prod = await Product.find({ type: productType, category: productCategory });
+        res.json(prod);
 
-            default:
-                res.status(400).json({ error: "oops what are you looking for " });
-                break;
-        }
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: "Something went wrong" });
-
     }
 };
-
-export default { getProducts, getComputerByCategory, getpartByName, getProductById };
+export default { getProducts, getProductById, getProductByType, getProductByCategory };
