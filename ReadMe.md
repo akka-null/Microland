@@ -1,31 +1,65 @@
-a webapp for microland inoformatique
+# a webapp for microland inoformatique
+- microland is a local shop that sells computers and pc parts
+- currntly they are using facbook page and ouedkniss page:
 
-// TODO: 
-- [ ] site prototype
-- [ ] db Schema
+- [MicroLand Ouedkniss](https://www.ouedkniss.com/store/2236/microland-informatique-oran/accueil?page=1)
+- [facebook Microland](https://www.facebook.com/profile.php?id=100063694124814)
 
-- [ ] use mongoose with mongoodb 
-- [ ] use drizzle with postgresql
+## TODO: 
+- [ ] migrate from js to ts
+### DB/ orm  side
+- [x] create a seeder script
+~~~ bash
+## seed predefind data
+npm run seed 
 
-# FrontEnd side:
-- [ ] build a figma prototype
-- [ ] start the react project structure
-- [ ] learn some react
-- [ ] learn some html
-- [ ] learn some css
-- [ ] add input validation for user input (UX)
+## drop the prduction model 
+npm run drop 
+~~~
+- [ ] Mongoodb with [Mongoose (odm)](https://mongoosejs.com/)
+    - [x] user Schema
+    - [x] ~~checkout~~ (no need for microland)
+    - [ ] user orders (not sure if we need it for space managment)
+    - [ ] user whishlist
+    - [ ] review schema
+    - [ ] product Schema
+        - [ ] use mongoose [discriminator](https://mongoosejs.com/docs/discriminators.html) to help structure the pruducts
+        - [ ] create index for better performace (need to test performance of mongooddb without them first)
 
-- [ ]
-- [ ]
+### try postgresql for this project
+- [ ] use drizzle || prisma with postgresql
+- [ ] ~~prisma~~(the more i read articles about prisma performance the more i lean twards drizzile)
+- [ ] use drizzle orm
+    - [ ] user Schema
+    - [x] ~~checkout~~ (no need for microland)
+    - [ ] user whishlist
+    - [ ] review schema
+    - [ ] product Schema
 
-# BackEnd side:
-- [ ] add input validation for user input (Security)
-- [ ] build the EndPoint
-- [ ] DB Schema
-- [x] user Schema
-- [ ] product Schema
-- [ ] Routes
-- [ ] middlewares is auth, is admin
+### Auth & security
+- [x] input validation sanitization ([express validator](https://express-validator.github.io/docs/guides/getting-started/))
+- [x] isAdmine middelware(protecting some routes)
+- [x] isLoggedIn middelware(protecting some routes)
+- [ ] Max Retry/Jail in Login
+- [x] ~~csrf protection~~ (no need in algeria unless we impliment stripe/chargily)
+- [x] HttpOnly cookie (JWT ofc)
+- [x] helmet js
+
+### ROUTES 
+- [ ] generate api doc with postman
+
+### product page
+- [ ] review ssytem with stars
+- [ ] review comments 
+- [ ] figure out the review formula
+
+### payment support
+- [ ] order form (for algeria since we don't use stripe)
+- [ ] Stripe (learning ) 
+- [ ] [chargily](https://chargily.com/)
+- [ ] impliment chargily
+
+
 ## Schema 
 ### user 
 - username
@@ -71,85 +105,6 @@ a webapp for microland inoformatique
 - mousepad
 - keyboard
 - headset
-# routes 
 
-``` bash
-http://localhost/product/
-                        /computer/
-                                 /Desktop
-                                 /laptop
-                                 /tabblet
-                                 /allinone
-                       /parts/
-                             /mob
-                                 /intel
-                                 /amd
-                             /gpu
-                                 /intel
-                                 /amd
-                             /cpu
-                                 /intel
-                                 /amd
-                             /ram
-                             /psu
-                             /case
-                             /storage
-                                     /ssd
-                                     /hdd
-                             /cooling
-                                     /air
-                                     /water
-                                     /fan
-                                     /thermalpaste
-                             /peripherals/
-                                         /monitor
-                                         /mouse
-                                         /keyboard
-                                         /headset
-                                         /mousepad
-
-
-```
-
-/product-category/accessoires-et-reseaux/
-/product-category/accessoires-et-reseaux/adaptateurs/adaptateurs-affichage/
-/product-category/accessoires-et-reseaux/adaptateurs/adaptateurs-alimentation/
-/product-category/accessoires-et-reseaux/adaptateurs/adaptateurs-audio/
-/product-category/accessoires-et-reseaux/adaptateurs/adaptateurs-usb/
-/product-category/accessoires-et-reseaux/adaptateurs/adaptateurs-type-c/
-/product-category/accessoires-et-reseaux/adaptateurs/hubs-usb/
-/product-category/accessoires-et-reseaux/adaptateurs/splitters/
-/product-category/accessoires-et-reseaux/cables/cables-affichage/
-/product-category/accessoires-et-reseaux/cables/cables-electrique/
-/product-category/accessoires-et-reseaux/cables/cables-audio/
-/product-category/accessoires-et-reseaux/cables/cables-reseau/
-/product-category/accessoires-et-reseaux/cables/cables-telephonique/
-
-/product-category/accessoires/reffroidisseur-cpu/
-/product-category/accessoires/stockage-externe/cartes-memoires/
-/product-category/accessoires/stockage-externe/flash-disk/
-/product-category/accessoires/stockage-externe/disques-durs-externes/
-/product-category/accessoires/stockage-externe/graveurs-externes/
-/product-category/accessoires-et-reseaux/#
-/product-category/accessoires-et-reseaux/#
-/product-category/accessoires/reseau/modems/
-/product-category/accessoires/reseau/routeurs-repeteurs-points-d-acces/
-/product-category/accessoires/reseau/bluetooth/
-/product-category/accessoires/reseau/usb-wifi/
-/product-category/accessoires/reseau/cartes-reseau-lan/
-/product-category/accessoires/reseau/cartes-reseau-wifi/
-/product-category/accessoires/reseau/switches/
-/product-category/accessoires/reseau/CPLS/
-/product-category/accessoires/reseau/antennes/
-/product-category/accessoires/onduleurs-multiprises/
-/product-category/logiciel/
-product-category/accessoires/telephonies/soires/telephonie/
-
-/product-category/mobilier-et-impression/
-/product-category/mobilier/tables-pc/
-/product-category/mobilier/chaises-pc/
-/product-category/printer/
-/product-category/consommables/
-/product-category/multimedia/
 
 

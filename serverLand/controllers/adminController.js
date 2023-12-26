@@ -9,6 +9,7 @@ async function getDashBoard(req, res) {
 async function addProd(req, res) {
     try {
         console.time("adding product");
+
         // const { title, price, quantity, image, description, condition } = req.body;
         // const product = await Product.insertMany({
         //     title,
@@ -21,15 +22,28 @@ async function addProd(req, res) {
         // res.status(201).json({ product });
         // const prods = await Product.insertMany(req.body);
         // res.status(201).json({ prods });
-        const { productCategory, ...data } = req.body;
-        console.log(data);
-        console.log(productCategory);
-        console.log(req.body);
 
-        const prod = new Product(req.body);
-        const product = await prod.save();
-        console.log(product);
-        res.status(201).json({ product });
+        // second aproach
+        // const { category, subCategory, ...data } = req.body;
+        // console.log(data);
+        // console.log(category);
+        // console.log(subCategory);
+        // res.json({ data, category, subCategory  });
+
+        // thrid apraoch the last one i think 
+
+        const { category, subCategory, ...data } = req.body;
+        console.log(category);
+        console.log(subCategory);
+        console.log(data);
+        const prod = await Product.insertMany({ category, subCategory, ...data });
+        res.status(201).json({ prod });
+
+
+
+        // const prod = new Product(req.body);
+        // const product = await prod.save();
+        // res.status(201).json({ product });
         // const ff = await Desktop.find();
         // console.log(ff);
         // res.status(201).json({ msg: "hey", ff });

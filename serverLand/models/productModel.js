@@ -1,5 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
+// NOTE: if you want to make mongoose model flexible add strict option and set it to false
+// {strict: false}
 const productSchema = new Schema({
     title: {
         type: String,
@@ -31,17 +33,20 @@ const productSchema = new Schema({
         enum: ["good-condition", "new"],
         default: "new"
     },
-    // hidden: Boolean
-}, { discriminatorKey: 'productCategory' });
-
-// NOTE: should we make the pcType pcParts peripherals and accessories as category or not
-//
-// TODO: i will just create some schemas im sure i will use no matter what 
-//
-// NOTE: fuck how stupid i was hmdoulilah it came to me when i was thinking through this at night
-// i just need to put all the comman field of all producs under the product model then i put the category fielad to determin 
-// which type of product is it and then using the discriminator we can create each sparated produt like gpu, cpu and stuf
-//
+    hidden: Boolean,
+    category: {
+        type: String,
+        enum: ['Desktop', 'Part', 'Peripheral'],
+        required: true
+    },
+    subCategory: {
+        type: String,
+        enum: ['Desktop', 'Gpu', 'Cpu'],
+        required: true
+    }
+    // with strict set to false you can add fields that are not defined in the schema 
+    // }, { discriminatorKey: 'category', strict: false }); 
+}, { discriminatorKey: 'category' });
 // Pc type
 const desktopSchema = new Schema({
     mob: String,
@@ -81,15 +86,39 @@ const tabletSchema = new Schema({
 });
 
 // pc parts 
+// mob
+const mobSchema = new Schema({
+    size: String, // atx micro atx
+});
+// gpu
 const gpuSchema = new Schema({
     vram: String,
 });
+// cpu
 const cpuSchema = new Schema({
+    cores: Number,
+
 });
+// ram
+const ramSchema = new Schema({
+    speed: String
+});
+// case 
+// storage 
+// cooler
+
+// perepherals
+// mouse 
+// keyboard
+// mousepad
+// speaker
+// headset
+// monitor
+
 const Product = mongoose.model('Product', productSchema);
 
 const Desktop = Product.discriminator('Desktop', desktopSchema);
-const Laptop = Product.discriminator('Laptop', laptopSchema );
+const Laptop = Product.discriminator('Laptop', laptopSchema);
 const Allinone = Product.discriminator('AllInOne', allinoneSchema);
 const Tablet = Product.discriminator('Tablet', tabletSchema);
 

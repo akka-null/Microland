@@ -31,11 +31,12 @@ async function getProductById(req, res) {
 
 // getting all the computers
 async function getComputerByCategory(req, res) {
-    const { category } = req.params;
+    const { computer } = req.params;
     try {
-        switch (category) {
+        switch (computer) {
             case 'Desktop':
-                const desktop = await Desktop.find();
+                const desktop = await Product.find({ "category": "Desktop" }).explain('excutionStats');
+                // const desktop = await Desktop.find().explain('excutionStats');
                 res.json(desktop);
                 break;
 
