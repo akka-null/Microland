@@ -5,7 +5,7 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node serverLand/app.js",
     "dev": "node --watch serverLand/app.js",
     "devv": "nodemon serverLand/app.js",
     "seed": "node serverLand/data/seed.js",
