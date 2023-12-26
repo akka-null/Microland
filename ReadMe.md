@@ -23,6 +23,8 @@ npm run drop
     - [ ] user whishlist
     - [ ] review schema
     - [ ] product Schema
+        - [ ] logic to calc the discount factor or the discount price
+        - [ ] logic to calc the discount price
         - [ ] use mongoose [discriminator](https://mongoosejs.com/docs/discriminators.html) to help structure the pruducts
         - [ ] create index for better performace (need to test performance of mongooddb without them first)
 
@@ -50,6 +52,7 @@ npm run drop
 
 ### product page
 - [ ] review ssytem with stars
+- [ ] review formula
 - [ ] review comments 
 - [ ] figure out the review formula
 

@@ -17,6 +17,22 @@ const productSchema = new Schema({
         required: true,
         default: 0.0,
     },
+    discountFactor: {
+        type: Number,
+        // min: [-1, '% starts from 0-100'],
+        // max: [100, "it's the products is free"],
+        // defualt: () => {
+        //     return (this.discount !== 0) ? (this.discount * 100) / this.price : 0
+        // }
+        default: 0
+    },
+    discount: {
+        type: Number,
+        /* default: () => {
+            return (this.price * this.discountFactor) / 100;
+        }, */
+        default: 0.0,
+    },
     quantity: {
         type: Number,
         required: true,
@@ -43,7 +59,7 @@ const productSchema = new Schema({
     },
     category: {
         type: String,
-        enum: ['Desktop', 'Gpu', 'Cpu'],
+        enum: ['Desktop', 'Gpu', 'Cpu', 'Ram'],
         required: true
     }
     // with strict set to false you can add fields that are not defined in the schema 
