@@ -20,7 +20,7 @@ npm run drop
 ~~~
 - [ ] Mongoodb with [Mongoose (odm)](https://mongoosejs.com/)
     - [x] user Schema
-    - [x] ~~checkout~~ (no need for microland)
+    - [x] ~~checkout~~ (frontend stuff no need to implement on the BE)
     - [ ] user orders (not sure if we need it for space managment)
     - [ ] user whishlist
     - [ ] review schema
