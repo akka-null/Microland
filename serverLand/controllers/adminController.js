@@ -12,11 +12,12 @@ async function addProd(req, res) {
         console.log(type);
         console.log(category);
         console.log(data);
+        // TODO: check for mongoose error and then procced
         const prod = await Product.insertMany({ type, category, ...data });
         res.status(201).json({ prod });
 
     } catch (err) {
-        res.json({ err });
+        res.status(400).json({ err });
     }
 }
 

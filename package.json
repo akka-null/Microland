@@ -6,8 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node serverLand/app.js",
-    "dev": "node --watch serverLand/app.js",
-    "devv": "nodemon serverLand/app.js",
+    "dev": "nodemon serverLand/app.js",
     "seed": "node serverLand/data/seed.js",
     "drop": "node serverLand/data/seed.js -drop"
   },
@@ -16,6 +15,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
+    "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
@@ -29,7 +29,7 @@
     "nodemailer-mailgun-transport": "^2.1.5"
   },
   "overrides": {
-      "whatwg-url": "13.0.0"
+    "whatwg-url": "13.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"

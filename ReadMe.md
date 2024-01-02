@@ -7,6 +7,8 @@
 
 ## TODO: 
 - [ ] migrate from js to ts
+- [ ] add pagination support to all the shop routes
+- [ ] don't rely on postman docs and learn how to implement Api doc with [openapi](https://swagger.io/specification/)
 ### DB/ orm  side
 - [x] create a seeder script
 ~~~ bash

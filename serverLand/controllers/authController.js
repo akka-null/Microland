@@ -30,7 +30,7 @@ async function register(req, res) {
         return res
             .status(400)
             // .json({ error: "All Fields Are Required" });
-        .json({ ValidationError: "All Fields Required", errorResult }); // 400 bad request
+            .json({ ValidationError: "All Fields Required", errorResult }); // 400 bad request
     }
     try {
         const hashedPassword = await bcrypt.hash(password, 12);
@@ -72,7 +72,8 @@ async function register(req, res) {
 async function Emailvalidation(req, res) {
     try {
         const decoded = jwt.verify(req.params.emailToken, process.env.EMAIL_SECRET);
-        await User.findOneAndUpdate(
+        // await User.findOneAndUpdate(
+        await User.updateOne(
             { _id: decoded.userId },
             { emailConfirmed: true }
         );
@@ -116,7 +117,7 @@ async function login(req, res) {
             // NOTE: if you don't set the maxAge it will a session coookie
             maxAge: 1000 * 60 * 5, // ms i want to give it 2 min
         })
-        .status(200).json({ msg: "login succesfully!" });
+            .status(200).json({ msg: "login succesfully!" });
     } catch (error) {
         res.status(500).json({ error: "Something Went Wrong" });
     }

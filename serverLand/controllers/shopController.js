@@ -54,4 +54,18 @@ async function getProductByCategory(req, res) {
         res.status(500).json({ error: "Something went wrong" });
     }
 };
+
+// orders
+async function postOrder(req, res) {
+    const data = {
+        products: [],
+        totalprice: 3000,
+        user: {
+            name: 'abdennour',
+            email: 'abdennour@gmail.com',
+            userId: '6585ffdc004dec4a9df7c509'
+        }
+    }
+
+};
 export default { getProducts, getProductById, getProductByType, getProductByCategory };

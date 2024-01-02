@@ -14,7 +14,7 @@ async function seedData() {
 
 async function deleteData() {
     try {
-        await Product.find().deleteMany();
+        await Product.deleteMany();
     } catch (err) {
         console.log(err);
     }

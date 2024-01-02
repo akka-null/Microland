@@ -6,6 +6,7 @@ const app = express();
 import mongoose from "mongoose";
 
 // depends
+import compression from "compression";
 import cors from "cors";
 // import csrfProtection from "csurf";
 import helmet from "helmet";
@@ -18,6 +19,8 @@ import adminRoute from "./routes/adminRoute.js";
 import shopRoute from "./routes/shopRoute.js";
 import authRoute from "./routes/authRoute.js";
 
+// compression
+app.use(compression());
 // middlewares
 app.use(helmet());
 // TODO: read if you should use csrf like this 
@@ -34,7 +37,7 @@ app.use("/admin", adminRoute);
 app.use(shopRoute);
 app.use(authRoute);
 
-app.get("/", (req, res) => {
+app.get("/", (_req, res) => {
     res.status(200).json({ msg: "hey akka" });
 });
 
@@ -42,7 +45,8 @@ mongoose
     .connect(process.env.URI)
     .then((_connection) => {
         app.listen(PORT, () => {
-            console.log(`your app is listenning or port:${PORT}...`);
+            // console.log(`your app is listenning or port:${PORT}...`);
+            console.log(`your app is running on: http://localhost:${PORT}`);
         });
     })
     .catch((err) => console.log(err));

@@ -2,6 +2,8 @@
 //      - create all the discriminators needed and export them
 import mongoose, { Schema } from "mongoose";
 
+const ProdType = Object.freeze({ "Desktop": "Desktop", "Laptop": "laptop" });
+
 // NOTE: if you want to make mongoose model flexible add strict option and set it to false
 // {strict: false}
 const productSchema = new Schema({
@@ -65,6 +67,26 @@ const productSchema = new Schema({
     // with strict set to false you can add fields that are not defined in the schema 
     // }, { discriminatorKey: 'category', strict: false }); 
 }, { discriminatorKey: 'category', timestamps: true });
+productSchema.path('type').validate(function(value) {
+    const validComputerCategory = ['Desktop', 'Laptop', 'Tablet', 'Allinone'];
+    const validPartCategory = ['Gpu', 'Cpu', 'Ram'];
+    const validPeripheralCategory = ['Mouse', 'Keyboard'];
+
+    // if the type(value) is Computer   ==> category must be validComputerCategory
+    // if the type(value) is Part       ==> category must be validPartCategory
+    // if the type(value) is Peripheral ==> category must be validPeripheralCategroy
+    if (value === 'Computer' && !validComputerCategory.includes(this.category)) {
+        return false;
+    }
+    else if (value === 'Part' && !validPartCategory.includes(this.category)) {
+        return false;
+    }
+    else if (value === 'Peripheral' && !validPeripheralCategory.includes(this.category)) {
+        return false;
+    }
+
+}, "Type does not match Category");
+
 // Pc type
 const desktopSchema = new Schema({
     mob: String,

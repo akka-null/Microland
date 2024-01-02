@@ -11,4 +11,5 @@ router.get("/product/:prodId", shopController.getProductById);
 router.get("/products/:productType", shopController.getProductByType);
 router.get("/products/:productType/:productCategory", shopController.getProductByCategory);
 
+// router.post("/orders", shopController);
 export default router;
