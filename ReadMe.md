@@ -6,7 +6,8 @@
 - [facebook Microland](https://www.facebook.com/profile.php?id=100063694124814)
 
 ## TODO: 
-- [ ] migrate from js to ts
+- [ ] migrate from js to ts ( should you?)
+- [ ] checkout [cloudnary](https://cloudinary.com/)
 - [ ] add pagination support to all the shop routes
 - [ ] don't rely on postman docs and learn how to implement Api doc with [openapi](https://swagger.io/specification/)
 ### DB/ orm  side
