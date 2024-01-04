@@ -54,6 +54,7 @@ async function register(req, res) {
         );
 
         const url = `http://localhost:3030/email/${emailToken}`;
+
         mailOptions["to"] = user.email;
         mailOptions.html = `Please click the link to confirm your email: <a href="${url}">${url}</a>`;
         //
@@ -73,6 +74,8 @@ async function Emailvalidation(req, res) {
     try {
         const decoded = jwt.verify(req.params.emailToken, process.env.EMAIL_SECRET);
         // await User.findOneAndUpdate(
+        // WARN: do we need to wait for the promise to resolve here?
+            // i don't think so 
         await User.updateOne(
             { _id: decoded.userId },
             { emailConfirmed: true }

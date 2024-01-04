@@ -13,7 +13,7 @@ async function isLoggedIn(req, res, next) {
             res.clearCookie("loginCookie");
             return res.status(400).json({ err });
         } else {
-            User.findById(decoded.userId)
+            User.findById(decoded.userId, '-password') 
                 .then((user) => {
                     req.user = user;
                     next();
