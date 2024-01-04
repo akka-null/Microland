@@ -13,7 +13,7 @@ const itemPerPage = process.env.ITEM_PER_PAGE;
 //  WARN: sleep on it
 
 // getting all the products
-        // TODO: -do we need to filter by price over here?
+// TODO: -do we need to filter by price over here?
 async function getProducts(req, res) {
     // so we make sure we accept only positive numbers
     const page = +req.query.page > 1 ? +req.query.page : 1;
@@ -69,7 +69,7 @@ async function getProductByCategory(req, res) {
         const count = await Product.countDocuments({ type: productType, category: productCategory });
         const prod = await Product.find({ type: productType, category: productCategory }).skip((page - 1) * itemPerPage).limit(itemPerPage);
 
-        res.json({ page, pages: Math.ceil(count / itemPerPage), prod });
+        res.json({ page, pages: Math.ceil(count / itemPerPage, prod) });
 
     } catch (error) {
         console.log(error);
