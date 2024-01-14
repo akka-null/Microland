@@ -69,7 +69,7 @@ async function getProductByCategory(req, res) {
         const count = await Product.countDocuments({ type: productType, category: productCategory });
         const prod = await Product.find({ type: productType, category: productCategory }).skip((page - 1) * itemPerPage).limit(itemPerPage);
 
-        res.json({ page, pages: Math.ceil(count / itemPerPage, prod) });
+        res.json({ page, pages: Math.ceil(count / itemPerPage), prod });
 
     } catch (error) {
         console.log(error);
