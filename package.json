@@ -5,8 +5,8 @@
   "main": "dist/app.js",
   "scripts": {
     "start": "node dist/app.js",
-    "dev": "tsc -w",
-    "server": "nodemon dist/app.js"
+    "build": "tsc -w",
+    "dev": "nodemon dist/app.js"
   },
   "author": "akka",
   "license": "MIT",
