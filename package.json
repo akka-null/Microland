@@ -4,10 +4,9 @@
   "description": "backend side of the site",
   "main": "dist/app.js",
   "scripts": {
-    "start": "nodemon dist/app.js",
+    "start": "node dist/app.js",
     "dev": "tsc -w",
-    "seed": "node dist/serverLand/data/seed.js",
-    "drop": "node dist/serverLand/data/seed.js -drop"
+    "server": "nodemon dist/app.js",
   },
   "author": "akka",
   "license": "MIT",
