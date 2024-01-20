@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node dist/app.js",
     "dev": "tsc -w",
-    "server": "nodemon dist/app.js",
+    "server": "nodemon dist/app.js"
   },
   "author": "akka",
   "license": "MIT",
