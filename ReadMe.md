@@ -1,3 +1,5 @@
+# this branch will be  play ground to try typescript
+* i will try to learn in this branch how to use ts with nodejs and express and mongoose while keeping the main(vanila js , vercel deployed)
 # a webapp for microland inoformatique
 - microland is a local shop that sells computers and pc parts
 - currntly they are using facbook page and ouedkniss page:

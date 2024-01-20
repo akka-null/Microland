@@ -1,9 +1,9 @@
-// FIX: make sure all the routes all working (here and in postman)
+// FIX: * make sure all the routes all working (here and in postman)
 import { Router } from "express";
 const router = Router();
-import adminController from "../controllers/adminController.js";
-import isLoggedIn from "../middlewares/loggedIn.js";
-import isAdmin from "../middlewares/isadmin.js";
+import * as adminController from "../controllers/adminController";
+import isLoggedIn from "../middlewares/loggedIn";
+import isAdmin from "../middlewares/isadmin";
 
 // get /admin
 router.get("/", isLoggedIn, isAdmin, adminController.getDashBoard);

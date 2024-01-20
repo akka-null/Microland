@@ -1,8 +1,15 @@
-import mongoose from "mongoose";
-const { Schema } = mongoose;
+import { model, Schema } from "mongoose";
 
-// TODO: add the more atterbute to your schema
-const userSchema = new Schema({
+export interface IUser {
+    _id?: Schema.Types.ObjectId | string;
+    username: string;
+    email: string;
+    password: string;
+    isAdmin?: boolean;
+    emailConfirmed?: boolean;
+}
+
+const userSchema = new Schema<IUser>({
     username: {
         type: String,
         required: true,
@@ -28,4 +35,4 @@ const userSchema = new Schema({
     },
 });
 
-export default mongoose.model("User", userSchema);
+export default model<IUser>("User", userSchema);

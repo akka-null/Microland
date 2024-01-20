@@ -11,8 +11,8 @@ const transporter = nodemailer.createTransport({
 });
 let mailOptions = {
   from: process.env.EMAIL_SENDER,
-  // to: "",
+  to: "",
   subject: "Email Confirmation",
-  // html: ``,
+  html: ``,
 };
 export { transporter, mailOptions };

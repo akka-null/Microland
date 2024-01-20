@@ -1,8 +1,5 @@
 import express from "express";
 import dotenv from "dotenv";
-dotenv.config();
-const PORT = process.env.PORT || 3050;
-const app = express();
 import mongoose from "mongoose";
 
 // depends
@@ -10,26 +7,32 @@ import compression from "compression";
 import cors from "cors";
 // import csrfProtection from "csurf";
 import helmet from "helmet";
-import bodyParser from "body-parser";
+import { urlencoded, json } from "body-parser";
 import logger from "morgan";
 import cookieParser from "cookie-parser";
 
 // routes
-import adminRoute from "./routes/adminRoute.js";
-import shopRoute from "./routes/shopRoute.js";
-import authRoute from "./routes/authRoute.js";
+import adminRoute from "./routes/adminRoute";
+import shopRoute from "./routes/shopRoute";
+import authRoute from "./routes/authRoute";
+
+dotenv.config();
+const PORT = process.env.PORT! || 3050;
+const app = express();
 
 // compression
 app.use(compression());
 // middlewares
 app.use(helmet());
-// TODO: read if you should use csrf like this 
-// app.use(csrfProtection()); //WARN: in microlan case i do not think will ever need csrf protection 
-// TODO: read if you should use cors like this or make our api be consumed only the frontend app
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+// TODO: *read if you should use csrf like this 
+// app.use(csrfProtection()); //WARN: * user CSRF if you use stripe or chargily
+// TODO: * read if you should use cors like this or make our api be consumed only the frontend app
+//       * learn more about cors
+// app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+app.use(cors({ credentials: true }));
 app.use(logger("dev"));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(urlencoded({ extended: false }));
+app.use(json());
 app.use(cookieParser());
 
 // using routes
@@ -42,7 +45,7 @@ app.get("/", (_req, res) => {
 });
 
 mongoose
-    .connect(process.env.URI)
+    .connect(process.env.URI!)
     .then((_connection) => {
         app.listen(PORT, () => {
             // console.log(`your app is listenning or port:${PORT}...`);

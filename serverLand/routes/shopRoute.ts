@@ -1,8 +1,7 @@
-// FIX: make sure all the routes all working (here and in postman)
 import { Router } from "express";
 
 const router = Router();
-import shopController from "../controllers/shopController.js";
+import * as shopController from "../controllers/shopController";
 
 router.get("/products", shopController.getProducts);
 router.get("/product/:prodId", shopController.getProductById);

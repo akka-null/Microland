@@ -2,13 +2,12 @@
   "name": "serverLand",
   "version": "1.0.0",
   "description": "backend side of the site",
-  "main": "app.js",
-  "type": "module",
+  "main": "dist/app.js",
   "scripts": {
-    "start": "node serverLand/app.js",
-    "dev": "nodemon serverLand/app.js",
-    "seed": "node serverLand/data/seed.js",
-    "drop": "node serverLand/data/seed.js -drop"
+    "start": "nodemon dist/app.js",
+    "dev": "tsc -w",
+    "seed": "node dist/serverLand/data/seed.js",
+    "drop": "node dist/serverLand/data/seed.js -drop"
   },
   "author": "akka",
   "license": "MIT",
@@ -29,9 +28,22 @@
     "nodemailer-mailgun-transport": "^2.1.5"
   },
   "overrides": {
-    "whatwg-url": "13.0.0"
+    "whatwg-url": "13.0.0",
+    "consolidate": "1.0.3"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "@types/bcryptjs": "^2.4.6",
+    "@types/body-parser": "^1.19.5",
+    "@types/compression": "^1.7.5",
+    "@types/cookie-parser": "^1.4.6",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^20.11.0",
+    "@types/nodemailer": "^6.4.14",
+    "@types/nodemailer-mailgun-transport": "^1.4.6",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.2"
   }
 }

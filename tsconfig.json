@@ -1,0 +1,56 @@
+{
+  "compilerOptions": {
+
+    /* Modules */
+    "module": "NodeNext",                                /* Specify what module code is generated. */
+    "moduleResolution": "NodeNext",                      /* Specify how TypeScript looks up a file from a given module specifier. */
+    "resolveJsonModule": true,                           /* Enable importing .json files. */
+
+    /* JavaScript Support */
+    // "allowJs": true,                                  /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */
+    // "checkJs": true,                                  /* Enable error reporting in type-checked JavaScript files. */
+
+    /* Language and Environment */
+    "target": "es2020",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+    "moduleDetection": "force",                          /* Control what method is used to detect module-format JS files. */
+
+    /* If your code doesn't run in the DOM: */
+    "lib": ["es2022"],                                   /* Specify a set of bundled library declaration files that describe the target runtime environment. */
+
+    /* Interop Constraints */
+    "isolatedModules": true,                             /* Ensure that each file can be safely transpiled without relying on other imports. */
+
+    "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
+    "outDir": "./dist",                                  /* Specify an output folder for all emitted files. */
+    "sourceMap": true,                                   /* Create source map files for emitted JavaScript files. */
+
+    /* Completeness */
+    "skipLibCheck": true,                                /* Skip type checking all .d.ts files. */ 
+
+    /* Type Checking */
+    "strict": true,                                      /* Enable all strict type-checking options. */
+    // "noImplicitAny": true,                            /* Enable error reporting for expressions and declarations with an implied 'any' type. */
+    // "strictNullChecks": true,                         /* When type checking, take into account 'null' and 'undefined'. */
+    // "strictFunctionTypes": true,                      /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */
+    // "strictBindCallApply": true,                      /* Check that the arguments for 'bind', 'call', and 'apply' methods match the original function. */
+    // "strictPropertyInitialization": true,             /* Check for class properties that are declared but not set in the constructor. */
+
+    "noUncheckedIndexedAccess": true,                    /* Add 'undefined' to a type when accessed using an index. */
+    "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
+
+    /* akka */
+
+    // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
+    // "typeRoots": ["./node_modules/@types","./serverLand/types"],                                  /* Specify multiple folders that act like './node_modules/@types'. */
+    // "types": [],                                      /* Specify type package names to be included without being referenced in a source file. */
+    // "allowImportingTsExtensions": true,               /* Allow imports to include TypeScript file extensions. Requires '--moduleResolution bundler' and either '--noEmit' or '--emitDeclarationOnly' to be set. */
+
+    // "declaration": true,                              /* Generate .d.ts files from TypeScript and JavaScript files in your project. */
+    // "declarationMap": true,                           /* Create sourcemaps for d.ts files. */
+    // "removeComments": true,                           /* Disable emitting comments. */
+    // "sourceRoot": "",                                 /* Specify the root path for debuggers to find the reference source code. */
+
+  },
+  "include": ["serverLand/**/*"]
+
+}

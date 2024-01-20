@@ -1,14 +1,14 @@
-// FIX: you are inconsitant wiht your error msg some time ERROR some time Error and the other time error fix it 
-import { mailOptions, transporter } from "../utils/sendMail.js";
+// FIX: * you are inconsitant wiht your error msg some time ERROR some time Error and the other time error fix it 
+import { RequestHandler } from "express";
+import { mailOptions, transporter } from "../utils/sendMail";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import User from "../models/userModel.js";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import User from "../models/userModel";
 import { matchedData, validationResult } from "express-validator";
-
 // @desc    user login
 // @path    POST /login
 // @access  private
-async function akka(req, res) {
+export const akka: RequestHandler = async (req, res) => {
     if (req.user) {
         res
             .status(200)
@@ -20,16 +20,15 @@ async function akka(req, res) {
 // @desc    user registration
 // @path    POST /register
 // @access  public
-async function register(req, res) {
-    // const { username, email, password, confirmPassword } = req.body;
-    const { username, email, password } = matchedData(req);
+export const register: RequestHandler = async (req, res) => {
+    const { username, email, password } = matchedData(req) as { username: string, email: string, password: string };
+
 
     // checking the validation errors
     const errorResult = validationResult(req);
     if (!errorResult.isEmpty()) {
         return res
             .status(400)
-            // .json({ error: "All Fields Are Required" });
             .json({ ValidationError: "All Fields Required", errorResult }); // 400 bad request
     }
     try {
@@ -47,7 +46,7 @@ async function register(req, res) {
             {
                 userId: user.id,
             },
-            process.env.EMAIL_SECRET,
+            process.env.EMAIL_SECRET!,
             {
                 expiresIn: "1d",
             }
@@ -62,20 +61,17 @@ async function register(req, res) {
         const info = transporter.sendMail(mailOptions);
         res.send("Email sent successfully!");
     } catch (error) {
-        console.log(err);
-        res.status(500).json({ error: "Something Went Wrong", err });
+        console.log(error);
+        res.status(500).json({ error });
     }
 }
 
 // @desc    user email validation
 // @path    POST /email
 // @access  private
-async function Emailvalidation(req, res) {
+export const Emailvalidation: RequestHandler = async (req, res) => {
     try {
-        const decoded = jwt.verify(req.params.emailToken, process.env.EMAIL_SECRET);
-        // await User.findOneAndUpdate(
-        // WARN: do we need to wait for the promise to resolve here?
-            // i don't think so 
+        const decoded = jwt.verify(req.params.emailToken!, process.env.EMAIL_SECRET!) as JwtPayload;
         await User.updateOne(
             { _id: decoded.userId },
             { emailConfirmed: true }
@@ -89,8 +85,8 @@ async function Emailvalidation(req, res) {
 // @desc    user login
 // @path    POST /login
 // @access  public
-async function login(req, res) {
-    // WARN: matchedDate witll return an object no matter what how many fields you valdiate it will always return and object
+export const login: RequestHandler = async (req, res) => {
+    // matchedDate witll return an object no matter what how many fields you valdiate it will always return and object
     const { email, password } = matchedData(req);
     const errorResult = validationResult(req);
 
@@ -110,14 +106,14 @@ async function login(req, res) {
                 .json({ error: "Please confirm your email addresss to login!" });
         }
         // found a user  create an httpONly cookie
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_TOKEN, {
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET_TOKEN!, {
             expiresIn: "5m",
         });
         res.cookie("loginCookie", token, {
             httpOnly: true,
             sameSite: "strict",
             secure: process.env.NODE_ENV !== "development", // we are in dev so dev !== dev will give false
-            // NOTE: if you don't set the maxAge it will a session coookie
+            // NOTE: * if you don't set the maxAge it will be a session coookie
             maxAge: 1000 * 60 * 5, // ms i want to give it 2 min
         })
             .status(200).json({ msg: "login succesfully!" });
@@ -129,7 +125,7 @@ async function login(req, res) {
 // @desc    user login
 // @path    POST /login
 // @access  public
-async function logout(req, res) {
+export const logout: RequestHandler = async (req, res) => {
     if (req.user) {
         res.clearCookie("loginCookie");
         res.status(200).json({ msg: "logout seccessfull" });
@@ -138,36 +134,38 @@ async function logout(req, res) {
     }
 }
 
-// WARN: rebuild and rethink the forget password feature
+// TODO: * rebuild and rethink the forget password feature
 
 // @desc    user login
 // @path    POST /login
 // @access  public
-async function forgetPass(req, res) {
+export const forgetPass: RequestHandler = async (req, res) => {
     const { email } = matchedData(req);
     try {
         const user = await User.findOne({ email: email });
-        // creating a password reset token and sending it thorugh an email
-        const passToken = jwt.sign(
-            {
-                userId: user.id,
-            },
-            process.env.EMAIL_SECRET,
-            {
-                expiresIn: "1d",
-            }
-        );
+        if (user) {
+            // creating a password reset token and sending it thorugh an email
+            const passToken = jwt.sign(
+                {
+                    userId: user.id,
+                },
+                process.env.EMAIL_SECRET!,
+                {
+                    expiresIn: "1d",
+                }
+            );
 
-        const url = `http://localhost:3030/reset/${passToken}`;
-        mailOptions["to"] = user.email;
-        mailOptions.html = `Please click the link to update your password: <a href="${url}">${url}</a>`;
-        //
-        // Send the email
-        const info = transporter.sendMail(mailOptions);
+            const url = `http://localhost:3030/reset/${passToken}`;
+            mailOptions["to"] = user.email;
+            mailOptions.html = `Please click the link to update your password: <a href="${url}">${url}</a>`;
+            //
+            // Send the email
+            const info = transporter.sendMail(mailOptions);
 
-        res.json({
-            msg: `${user.username} please check you email inbox we sent a password recovery link to you `,
-        });
+            res.json({
+                msg: `${user.username} please check you email inbox we sent a password recovery link to you `,
+            });
+        }
     } catch (error) {
         res.json({ error: error });
     }
@@ -176,34 +174,23 @@ async function forgetPass(req, res) {
 // @desc    user login
 // @path    POST /login
 // @access  public
-async function resetPass(req, res) {
+export const resetPass: RequestHandler = async (req, res) => {
     try {
-        const decoded = jwt.verify(req.params.passToken, process.env.EMAIL_SECRET);
+        const decoded = jwt.verify(req.params.passToken!, process.env.EMAIL_SECRET) as JwtPayload;
         res.status(200).json({ userId: decoded.userId });
     } catch (err) {
         res.status(500).json({ error: err });
     }
 }
-async function updatePass(req, res) {
+export const updatePass: RequestHandler = async (req, res) => {
     try {
-        // TODO: validate the id and password and confirm password for this route
+        // TODO: * await the result then return or not?
         const { password } = matchedData(req);
         const hashedPass = await bcrypt.hash(password, 12);
+        // WARN: * which is better finByIdAndUpdate or UpdateOne
         await User.findByIdAndUpdate(req.params.userId, { password: hashedPass });
         res.status(200).json({ msg: "password updated" });
     } catch (err) {
         res.status(500).json({ error: err });
     }
 }
-// TODO: validate the input for forget password and rethink the logic of makeing 2 request for password
-
-export default {
-    register,
-    login,
-    logout,
-    forgetPass,
-    resetPass,
-    updatePass,
-    Emailvalidation,
-    akka,
-};

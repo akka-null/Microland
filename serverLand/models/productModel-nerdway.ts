@@ -1,18 +1,49 @@
-// FIX: - add all the necessary fields to each category
-//      - create all the discriminators needed and export them
-import mongoose, { Schema } from "mongoose";
+// FIX: * add all the necessary fields to each category
+//      * create all the discriminators needed and export them
+//      * use typescript here
+//      * the nerd way of doing it 
+// NOTE: * what i mean by the nerdway of doing it is :
+//      - create a general interface for all the products (typescript related)
+//      - create a sub interfaces that extends the base products interface (typescript related)
+//      - create a base model for all the product
+//      - extend the base model with sub models like Computer | Part | Peripheral
+//     # example on why we need this 
+//     if you want to add a gpu and cpu to the DB
+//     both are sub products that extedens the base products model but
+//     CPU hase "Cores", "threads", "CashSize",.... property
+//     GPU hase "VRAM", .. 
+//     so we need to use the discriminator for that to extend the base model
+//     WARN: * the use case for this :
+//     - if you have a filter option on the website you want all the 12gb vram gpu on the DB or all the i3 cpus on the website
+//
+//     TODO: # wait for the frontend side to finish and then see if you need to use this
+import { Schema, model } from "mongoose";
 
-const ProdType = Object.freeze({ "Desktop": "Desktop", "Laptop": "laptop" });
+export interface IProduct {
+    title: string;
+    brand: string;
+    price: number;
+    discountFactor: number;
+    discount: number;
+    quantity: number;
+    description: string;
+    image: string | string[];
+    condition: 'new' | 'good as new';
+    hidden: boolean;
+    type: 'Computer' | 'Part' | 'Peripheral';
+    category: 'Desktop' | 'Laptop' | 'Tablet' | 'AllInOne' |
+    'Mob' | 'Psu' | 'Gpu' | 'Cpu' | 'Ram' | 'Case' |
+    'Keyboard' | 'Mouse' | 'Monitor';
+}
 
-// NOTE: if you want to make mongoose model flexible add strict option and set it to false
-// {strict: false}
-const productSchema = new Schema({
+const productSchema = new Schema<IProduct>({
     title: {
         type: String,
         required: true,
     },
     brand: {
         type: String,
+        required: true,
     },
     price: {
         type: Number,
@@ -61,16 +92,20 @@ const productSchema = new Schema({
     },
     category: {
         type: String,
-        enum: ['Desktop', 'Gpu', 'Cpu', 'Ram'],
+        enum: ['Desktop', 'Laptop', 'Tablet', 'AllInOne',
+            'Mob', 'Psu', 'Gpu', 'Cpu', 'Ram', 'Case',
+            'Keyboard', 'Mouse', 'Monitor',
+        ],
         required: true
     }
     // with strict set to false you can add fields that are not defined in the schema 
     // }, { discriminatorKey: 'category', strict: false }); 
 }, { discriminatorKey: 'category', timestamps: true });
+
 productSchema.path('type').validate(function(value) {
-    const validComputerCategory = ['Desktop', 'Laptop', 'Tablet', 'Allinone'];
-    const validPartCategory = ['Gpu', 'Cpu', 'Ram'];
-    const validPeripheralCategory = ['Mouse', 'Keyboard'];
+    const validComputerCategory = ['Desktop', 'Laptop', 'Tablet', 'AllInOne'];
+    const validPartCategory = ['Mob', 'Psu', 'Gpu', 'Cpu', 'Ram', 'Case'];
+    const validPeripheralCategory = ['Monitor', 'Mouse', 'Keyboard'];
 
     // if the type(value) is Computer   ==> category must be validComputerCategory
     // if the type(value) is Part       ==> category must be validPartCategory
@@ -155,7 +190,7 @@ const ramSchema = new Schema({
 // headset
 // monitor
 
-const Product = mongoose.model('Product', productSchema);
+const Product = model<IProduct>('Product', productSchema);
 
 const Desktop = Product.discriminator('Desktop', desktopSchema);
 const Laptop = Product.discriminator('Laptop', laptopSchema);

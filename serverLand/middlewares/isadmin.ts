@@ -1,6 +1,8 @@
-async function isAdmin(req, res, next) {
+import { RequestHandler } from "express";
+
+export const isAdmin: RequestHandler = async (req, res, next) => {
     try {
-        if (req.user.isAdmin) {
+        if (req.user && req.user.isAdmin) {
             next();
         }
         else {

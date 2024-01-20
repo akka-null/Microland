@@ -1,7 +1,7 @@
-import products from './products.js'
-import mongoose from 'mongoose';
-import { Product } from '../models/productModel.js';
-import dotenv from 'dotenv';
+import products from "./products"
+import mongoose from "mongoose";
+import { Product } from "../models/productModel";
+import dotenv from "dotenv";
 dotenv.config();
 
 async function seedData() {
@@ -20,7 +20,7 @@ async function deleteData() {
     }
 }
 
-mongoose.connect(process.env.URI)
+mongoose.connect(process.env.URI!)
     .then(async (_connection) => {
         if (process.argv[2] === '-drop') {
             await deleteData();

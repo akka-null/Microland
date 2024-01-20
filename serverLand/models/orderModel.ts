@@ -1,4 +1,4 @@
-import User from './userModel.js'
+import User from "./userModel"
 import mongoose, { Schema } from 'mongoose'
 
 const orderSchema = new Schema({

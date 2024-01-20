@@ -1,9 +1,9 @@
-// FIX: make sure all the routes all working (here and in postman)
+// FIX: * make sure all the routes all working (here and in postman)
 import { Router } from "express";
 import { body } from "express-validator";
-import authController from "../controllers/authController.js";
-import User from "../models/userModel.js";
-import isLoggedIn from "../middlewares/loggedIn.js";
+import * as authController from "../controllers/authController";
+import User from "../models/userModel";
+import isLoggedIn from "../middlewares/loggedIn";
 
 const router = Router();
 
@@ -88,6 +88,6 @@ router.post("/updatePass/:userId",
     }),
     authController.updatePass);
 
-// TODO: register with google account Oauth
+// TODO: @feature register with google account Oauth
 
 export default router;
