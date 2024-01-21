@@ -3,15 +3,13 @@
   "version": "1.0.0",
   "description": "MicroLand",
   "main": "dist/app.js",
+  "pre-commit": [ "build" ],
   "scripts": {
     "start": "node dist/app.js",
     "build": "rimraf dist && tsc",
     "watch": "tsc -w",
     "dev": "nodemon dist/app.js"
   },
-  "pre-commit": [
-      "build",
-  ],
   "author": "akka",
   "license": "MIT",
   "dependencies": {
