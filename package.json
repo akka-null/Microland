@@ -1,14 +1,17 @@
 {
   "name": "serverLand",
   "version": "1.0.0",
-  "description": "backend side of the site",
+  "description": "MicroLand",
   "main": "dist/app.js",
   "scripts": {
     "start": "node dist/app.js",
-    "build": "tsc",
-    "devv": "tsc -w",
+    "build": "rimraf dist && tsc",
+    "watch": "tsc -w",
     "dev": "nodemon dist/app.js"
   },
+  "pre-commit": [
+      "build",
+  ],
   "author": "akka",
   "license": "MIT",
   "dependencies": {
@@ -25,8 +28,7 @@
     "mongoose": "^8.0.1",
     "morgan": "^1.10.0",
     "nodemailer": "^6.9.7",
-    "nodemailer-mailgun-transport": "^2.1.5",
-    "typescript": "^5.3.3"
+    "nodemailer-mailgun-transport": "^2.1.5"
   },
   "overrides": {
     "whatwg-url": "13.0.0",
@@ -45,6 +47,9 @@
     "@types/nodemailer": "^6.4.14",
     "@types/nodemailer-mailgun-transport": "^1.4.6",
     "nodemon": "^3.0.1",
-    "ts-node": "^10.9.2"
+    "pre-commit": "^1.2.2",
+    "rimraf": "^5.0.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
   }
 }
