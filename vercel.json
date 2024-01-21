@@ -1,5 +1,5 @@
 {
     "installCommand": "npm install",
-    "buildCommand": "tsc",
+    "buildCommand": "npx tsc",
     "rewrites": [{ "source": "/(.*)", "destination": "/dist" }]
 }
