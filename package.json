@@ -5,7 +5,8 @@
   "main": "dist/app.js",
   "scripts": {
     "start": "node dist/app.js",
-    "build": "tsc -w",
+    "build": "tsc",
+    "devv": "tsc -w",
     "dev": "nodemon dist/app.js"
   },
   "author": "akka",
