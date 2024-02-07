@@ -28,7 +28,7 @@ const productSchema = new mongoose_1.Schema({
     },
     brand: {
         type: String,
-        required: true,
+        // required: true,
     },
     price: {
         type: Number,
@@ -77,10 +77,6 @@ const productSchema = new mongoose_1.Schema({
     },
     category: {
         type: String,
-        enum: ['Desktop', 'Laptop', 'Tablet', 'AllInOne',
-            'Mob', 'Psu', 'Gpu', 'Cpu', 'Ram', 'Case',
-            'Keyboard', 'Mouse', 'Monitor',
-        ],
         required: true
     }
     // with strict set to false you can add fields that are not defined in the schema 
@@ -88,8 +84,8 @@ const productSchema = new mongoose_1.Schema({
 }, { discriminatorKey: 'category', timestamps: true });
 productSchema.path('type').validate(function (value) {
     const validComputerCategory = ['Desktop', 'Laptop', 'Tablet', 'AllInOne'];
-    const validPartCategory = ['Mob', 'Psu', 'Gpu', 'Cpu', 'Ram', 'Case'];
-    const validPeripheralCategory = ['Monitor', 'Mouse', 'Keyboard'];
+    const validPartCategory = ['Mob', 'Psu', 'Gpu', 'Cpu', 'Ram', 'Case', 'Cooler', 'Storage'];
+    const validPeripheralCategory = ['Monitor', 'Mouse', 'Keyboard', 'Keyboard-Mouse', 'MousePad', 'Fan', 'ThermalPaste', 'Headset-Mic'];
     // if the type(value) is Computer   ==> category must be validComputerCategory
     // if the type(value) is Part       ==> category must be validPartCategory
     // if the type(value) is Peripheral ==> category must be validPeripheralCategroy
@@ -102,7 +98,7 @@ productSchema.path('type').validate(function (value) {
     else if (value === 'Peripheral' && !validPeripheralCategory.includes(this.category)) {
         return false;
     }
-}, "Type does not match Category");
+}, "Type does not match Category akka");
 // Pc type
 const desktopSchema = new mongoose_1.Schema({
     mob: String,

@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import { Product } from "../models/productModel";
-import Order from '../models/orderModel';
+import { Order } from '../models/orderModel';
+import { validationResult } from "express-validator";
 import dotenv from 'dotenv';
 dotenv.config();
 const itemPerPage = +process.env.ITEM_PER_PAGE!;
@@ -15,7 +16,7 @@ const itemPerPage = +process.env.ITEM_PER_PAGE!;
 
 // getting all the products
 // TODO: * we need to filter by price over here?
-export const getProducts: RequestHandler = async (req, res) => {
+export const getProducts: RequestHandler = async (req, res, next) => {
     let page = +req.query.page!; // ! means trust me bro i know page will never be undefinded
     page >= 1 ? page : 1;
     try {
@@ -25,26 +26,26 @@ export const getProducts: RequestHandler = async (req, res) => {
         res.json({ page, total, pages: Math.ceil(total / itemPerPage), prods });
 
     } catch (error) {
-        res.status(500).json({ error: "Something went wrong" });
+        next(error);
     }
 }
 
 // getting one product by the id
-export const getProductById: RequestHandler = async (req, res) => {
+export const getProductById: RequestHandler = async (req, res, next) => {
     const { prodId } = req.params;
     try {
         const prod = await Product.findById({ _id: prodId });
 
         res.json({ prod });
     } catch (error) {
-        res.status(500).json({ error: "Something went wrong" });
+        next(error);
     }
 }
 
 // getting the products by the category
 
 //  get product by type: Computer, Part, Peripheral, accessory
-export const getProductByType: RequestHandler = async (req, res) => {
+export const getProductByType: RequestHandler = async (req, res, next) => {
     const { productType } = req.params;
     let page = +req.query.page!; // ! means trust me bro i know page will never be undefinded
     page >= 1 ? page : 1;
@@ -55,13 +56,12 @@ export const getProductByType: RequestHandler = async (req, res) => {
         res.json({ page, pages: Math.ceil(total / itemPerPage), prod });
 
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: "Something went wrong" });
+        next(error);
     }
 };
 
 //  get product by category: Gpu, Desktop, Cpu, etc..
-export const getProductByCategory: RequestHandler = async (req, res) => {
+export const getProductByCategory: RequestHandler = async (req, res, next) => {
     const { productType, productCategory } = req.params;
     let page = +req.query.page!; // ! means trust me bro i know page will never be undefinded
     page >= 1 ? page : 1;
@@ -73,8 +73,47 @@ export const getProductByCategory: RequestHandler = async (req, res) => {
         res.json({ page, pages: Math.ceil(count / itemPerPage), prod });
 
     } catch (error) {
-        console.log(error);
-        res.status(500).json({ error: "Something went wrong" });
+        next(error);
+    }
+};
+
+export const postReview: RequestHandler = async (req, res, next) => {
+    const { prodId } = req.params;
+    const { name, email, userId, comment, rate } = req.body as { name: string, email: string, userId: string, comment: string, rate: string };
+
+    // checking the validation errors
+    const errorResult = validationResult(req);
+    if (!errorResult.isEmpty()) {
+        res.status(400);
+        next(Error(errorResult.array()[0]?.msg));
+    }
+    try {
+        const prod = await Product.findById(prodId);
+        if (prod) {
+            // make sure the user hase only one review and can't add more than one
+            const found = prod.reviews.find((element) => element.userId === userId);
+            if (found) {
+                res.status(400);
+                next(Error('User Already reviewd this product'));
+            }
+            // pushing the new review to the reviews array in product DB
+            prod.reviews.push({ name, email, userId, comment, rate: +rate });
+            // calculate the new rating
+            if (prod.rating === 0 && prod.reviewsCount === 0) {
+                prod.reviewsCount += 1;
+                prod.rating = +rate;
+            }
+            else {
+                let score = prod.rating * prod.reviewsCount;
+                score += +rate;
+                prod.reviewsCount++;
+                prod.rating = score / prod.reviewsCount;
+            }
+            prod.save();
+            res.json({ msg: prod });
+        }
+    } catch (error) {
+        next(error);
     }
 };
 
@@ -84,17 +123,17 @@ export const getProductByCategory: RequestHandler = async (req, res) => {
 // update order from pending => delevred
 // get orders will be used by the admin so he can see the current pending orders
 
-export const getOrders: RequestHandler = async (req, res) => {
+export const getOrders: RequestHandler = async (req, res, next) => {
     try {
         const orders = await Order.find().populate({ path: 'userId', select: '-password -isAdmin -emailConfirmed -_id' });
         res.json({ orders });
     } catch (error) {
-        console.log(error);
+        next(error);
     }
 };
 // TODO: * need to work on the ORDER
 // for now im putting raw data manually will talk about that later
-export const postOrder: RequestHandler = async (req, res) => {
+export const postOrder: RequestHandler = async (req, res, next) => {
     try {
         const order = await Order.insertMany({
             products: [{
@@ -111,7 +150,7 @@ export const postOrder: RequestHandler = async (req, res) => {
 
 
     } catch (error) {
-        console.log(error);
+        next(error);
     }
 
 };

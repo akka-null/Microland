@@ -15,9 +15,9 @@ router.patch('/product/:prodId', isLoggedIn, isAdmin, adminController.PatchProd)
 router.delete('/product/:prodId', isLoggedIn, isAdmin, adminController.DeleteProd);
 
 // Post /admin/:userId
-router.patch('/:userId', isLoggedIn, isAdmin, adminController.MakeAdmin);
+// router.patch('/:userId', isLoggedIn, isAdmin, adminController.MakeAdmin);
 // Delete /admin/:userId
-router.delete('/:userId', isLoggedIn, isAdmin, adminController.DeleteUser);
+// router.delete('/:userId', isLoggedIn, isAdmin, adminController.DeleteUser);
 
 
 export default router;

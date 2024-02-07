@@ -2,16 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isAdmin = void 0;
 const isAdmin = async (req, res, next) => {
-    try {
-        if (req.user && req.user.isAdmin) {
-            next();
-        }
-        else {
-            return res.status(403).json({ "errorMsg": "you must be an admin to do that " });
-        }
+    if (req.user && req.user.isAdmin) {
+        next();
     }
-    catch (error) {
-        res.json({ error });
+    else {
+        res.status(403);
+        next(Error('you must be and admin to do that'));
     }
 };
 exports.isAdmin = isAdmin;

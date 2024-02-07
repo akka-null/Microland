@@ -28,7 +28,7 @@ mongoose_1.default.connect(process.env.URI)
     .then(async (_connection) => {
     if (process.argv[2] === '-drop') {
         await deleteData();
-        console.log('products delted');
+        console.log('products deleted');
     }
     else {
         await seedData();

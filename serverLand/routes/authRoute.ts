@@ -2,13 +2,9 @@
 import { Router } from "express";
 import { body } from "express-validator";
 import * as authController from "../controllers/authController";
-import User from "../models/userModel";
+import { User } from "../models/userModel";
 import isLoggedIn from "../middlewares/loggedIn";
-
 const router = Router();
-
-// trying a protected route and must be logged in to reach it 
-router.use("/akka", isLoggedIn, authController.akka);
 
 // signup  || register
 router.post(
@@ -72,12 +68,8 @@ router.post(
         .withMessage("Please use a valid E-mail address"),
     authController.forgetPass
 );
-
-// updating passsword
-router.get("/reset/:passToken", authController.resetPass);
-
-// update password
-router.post("/updatePass/:userId",
+// reset the password after getting the token
+router.post("/reset/:passToken",
     body("password", "please use a password at least with 5 characters").isLength(
         { min: 5 }
     ),
@@ -86,8 +78,6 @@ router.post("/updatePass/:userId",
             throw new Error("Passwords do not match!");
         }
     }),
-    authController.updatePass);
-
-// TODO: @feature register with google account Oauth
+    authController.resetPassword);
 
 export default router;

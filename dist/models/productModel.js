@@ -5,6 +5,27 @@ exports.Product = void 0;
 //      * create all the discriminators needed and export them
 //      * use typescript here
 const mongoose_1 = require("mongoose");
+const reviewSchema = new mongoose_1.Schema({
+    name: {
+        type: String,
+        required: true,
+    },
+    email: {
+        type: String,
+        required: true,
+    },
+    userId: {
+        type: String,
+    },
+    comment: {
+        type: String,
+        required: true,
+    },
+    rate: {
+        type: Number,
+        required: true,
+    },
+});
 const productSchema = new mongoose_1.Schema({
     title: {
         type: String,
@@ -12,12 +33,42 @@ const productSchema = new mongoose_1.Schema({
     },
     brand: {
         type: String,
-        required: true,
+        // required: true,
     },
     price: {
         type: Number,
         required: true,
         default: 0.0,
+    },
+    quantity: {
+        type: Number,
+        required: true,
+        default: 0,
+    },
+    description: {
+        type: String,
+        required: true,
+    },
+    reviews: {
+        type: [reviewSchema],
+        default: [],
+    },
+    rating: {
+        type: Number,
+        default: 0,
+    },
+    reviewsCount: {
+        type: Number,
+        default: 0,
+    },
+    images: {
+        type: [String],
+        required: true,
+    },
+    condition: {
+        type: String,
+        enum: ["used", "new"],
+        default: "new"
     },
     discountFactor: {
         type: Number,
@@ -33,25 +84,7 @@ const productSchema = new mongoose_1.Schema({
         /* default: () => {
             return (this.price * this.discountFactor) / 100;
         }, */
-        default: 0.0,
-    },
-    quantity: {
-        type: Number,
-        required: true,
         default: 0,
-    },
-    description: {
-        type: String,
-        required: true,
-    },
-    image: {
-        type: String,
-        required: true,
-    },
-    condition: {
-        type: String,
-        enum: ["used", "new"],
-        default: "new"
     },
     hidden: Boolean,
     type: {
@@ -61,29 +94,25 @@ const productSchema = new mongoose_1.Schema({
     },
     category: {
         type: String,
-        enum: ['Desktop', 'Laptop', 'Tablet', 'AllInOne',
-            'Mob', 'Psu', 'Gpu', 'Cpu', 'Ram', 'Case',
-            'Keyboard', 'Mouse', 'Monitor',
-        ],
         required: true
     }
     // with strict set to false you can add fields that are not defined in the schema 
     // }, { discriminatorKey: 'category', strict: false }); 
-}, { discriminatorKey: 'category', timestamps: true });
+}, { timestamps: true });
 productSchema.path('type').validate(function (value) {
-    const validComputerCategory = ['Desktop', 'Laptop', 'Tablet', 'AllInOne'];
-    const validPartCategory = ['Mob', 'Psu', 'Gpu', 'Cpu', 'Ram', 'Case'];
-    const validPeripheralCategory = ['Monitor', 'Mouse', 'Keyboard'];
+    const ComputerCategory = ['Desktop', 'Laptop', 'Tablet', 'AllInOne'];
+    const PartCategory = ['Mob', 'Psu', 'Gpu', 'Cpu', 'Ram', 'Case', 'Storage', 'Cooler'];
+    const PeripheralCategory = ['Monitor', 'Mouse', 'Keyboard', 'Keyboard-Mouse', 'MousePad', 'Headset-Mic', 'Webcam', 'ThermalPaste'];
     // if the type(value) is Computer   ==> category must be validComputerCategory
     // if the type(value) is Part       ==> category must be validPartCategory
     // if the type(value) is Peripheral ==> category must be validPeripheralCategroy
-    if (value === 'Computer' && !validComputerCategory.includes(this.category)) {
+    if (value === 'Computer' && !ComputerCategory.includes(this.category)) {
         return false;
     }
-    else if (value === 'Part' && !validPartCategory.includes(this.category)) {
+    else if (value === 'Part' && !PartCategory.includes(this.category)) {
         return false;
     }
-    else if (value === 'Peripheral' && !validPeripheralCategory.includes(this.category)) {
+    else if (value === 'Peripheral' && !PeripheralCategory.includes(this.category)) {
         return false;
     }
 }, "Type does not match Category");

@@ -4,18 +4,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isLoggedIn = void 0;
-const userModel_1 = __importDefault(require("../models/userModel"));
+const userModel_1 = require("../models/userModel");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const isLoggedIn = async (req, res, next) => {
     const token = req.cookies.loginCookie;
     if (!token) {
-        return res.status(401).json({ "errorMsg": "login first" });
+        res.status(401);
+        next(Error('Login First'));
     }
     try {
+        // TODO: # avoid using as JwtPayload
         const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET_TOKEN);
-        const user = await userModel_1.default.findById(decoded.userId, '-password');
+        const user = await userModel_1.User.findById(decoded.userId, '-password');
         if (user) {
             req.user = user;
             next();
@@ -23,7 +25,8 @@ const isLoggedIn = async (req, res, next) => {
     }
     catch (error) {
         res.clearCookie("loginCookie");
-        return res.status(500).json({ error });
+        res.status(500);
+        next(error);
     }
 };
 exports.isLoggedIn = isLoggedIn;

@@ -2,7 +2,21 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 
+// TODO: must
+//          * order (cart system chekcout)
+//          * forum for algeria
+//          * chagily for algeria
+//          * stripe for real world
+//          # password recovery
+//          # OAuth with google
+//          # max try jail
+//          ## check the code all the fields sschema 
+//          ### to get hired
+//          # must create a documentaiton for the backend(api doc)
+//          # writing tests ( for now we are using postman as testing)
+//
 // depends
+// FIX: change all the error handling mechanisem 
 import compression from "compression";
 import cors from "cors";
 // import csrfProtection from "csurf";
@@ -15,6 +29,8 @@ import cookieParser from "cookie-parser";
 import adminRoute from "./routes/adminRoute";
 import shopRoute from "./routes/shopRoute";
 import authRoute from "./routes/authRoute";
+import notFound from "./middlewares/notFound";
+import errorHandler from "./middlewares/errorhandler";
 
 dotenv.config();
 const PORT = process.env.PORT! || 3050;
@@ -36,13 +52,16 @@ app.use(json());
 app.use(cookieParser());
 
 // using routes
+app.get("/", (req, res, _next) => {
+    console.log(`${req.hostname}:${PORT}`);
+    res.status(200).json({ msg: "hey akka", "@": `${req.hostname}:${PORT}` });
+    // next(Error('hey akka'));
+});
 app.use("/admin", adminRoute);
 app.use(shopRoute);
 app.use(authRoute);
-
-app.get("/", (_req, res) => {
-    res.status(200).json({ msg: "hey akka" });
-});
+app.use(notFound);
+app.use(errorHandler);
 
 mongoose
     .connect(process.env.URI!)

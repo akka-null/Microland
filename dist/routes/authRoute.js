@@ -30,17 +30,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const express_validator_1 = require("express-validator");
 const authController = __importStar(require("../controllers/authController"));
-const userModel_1 = __importDefault(require("../models/userModel"));
+const userModel_1 = require("../models/userModel");
 const loggedIn_1 = __importDefault(require("../middlewares/loggedIn"));
 const router = (0, express_1.Router)();
-// trying a protected route and must be logged in to reach it 
-router.use("/akka", loggedIn_1.default, authController.akka);
 // signup  || register
 router.post("/register", (0, express_validator_1.body)("username")
     .trim()
     .escape()
     .custom(async (name) => {
-    const oldName = await userModel_1.default.findOne({ username: name });
+    const oldName = await userModel_1.User.findOne({ username: name });
     if (oldName) {
         throw new Error("Username already exists");
     }
@@ -50,7 +48,7 @@ router.post("/register", (0, express_validator_1.body)("username")
     .isEmail()
     .withMessage("Please use a valid E-mail address")
     .custom(async (mail) => {
-    const oldEmail = await userModel_1.default.findOne({ email: mail });
+    const oldEmail = await userModel_1.User.findOne({ email: mail });
     if (oldEmail) {
         throw new Error("E-mail already in use");
     }
@@ -76,14 +74,11 @@ router.post("/forget", (0, express_validator_1.body)("email")
     .escape()
     .isEmail()
     .withMessage("Please use a valid E-mail address"), authController.forgetPass);
-// updating passsword
-router.get("/reset/:passToken", authController.resetPass);
-// update password
-router.post("/updatePass/:userId", (0, express_validator_1.body)("password", "please use a password at least with 5 characters").isLength({ min: 5 }), (0, express_validator_1.body)("confirmPassword").custom(async (confirmPass, { req }) => {
+// reset the password after getting the token
+router.post("/reset/:passToken", (0, express_validator_1.body)("password", "please use a password at least with 5 characters").isLength({ min: 5 }), (0, express_validator_1.body)("confirmPassword").custom(async (confirmPass, { req }) => {
     if (confirmPass !== req.body.password) {
         throw new Error("Passwords do not match!");
     }
-}), authController.updatePass);
-// TODO: @feature register with google account Oauth
+}), authController.resetPassword);
 exports.default = router;
 //# sourceMappingURL=authRoute.js.map

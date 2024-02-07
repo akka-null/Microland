@@ -28,12 +28,10 @@ export interface IProduct {
     quantity: number;
     description: string;
     image: string | string[];
-    condition: 'new' | 'good as new';
+    condition: 'new' | 'used';
     hidden: boolean;
     type: 'Computer' | 'Part' | 'Peripheral';
-    category: 'Desktop' | 'Laptop' | 'Tablet' | 'AllInOne' |
-    'Mob' | 'Psu' | 'Gpu' | 'Cpu' | 'Ram' | 'Case' |
-    'Keyboard' | 'Mouse' | 'Monitor';
+    category: string;
 }
 
 const productSchema = new Schema<IProduct>({
@@ -43,7 +41,7 @@ const productSchema = new Schema<IProduct>({
     },
     brand: {
         type: String,
-        required: true,
+        // required: true,
     },
     price: {
         type: Number,
@@ -92,10 +90,6 @@ const productSchema = new Schema<IProduct>({
     },
     category: {
         type: String,
-        enum: ['Desktop', 'Laptop', 'Tablet', 'AllInOne',
-            'Mob', 'Psu', 'Gpu', 'Cpu', 'Ram', 'Case',
-            'Keyboard', 'Mouse', 'Monitor',
-        ],
         required: true
     }
     // with strict set to false you can add fields that are not defined in the schema 
@@ -104,8 +98,8 @@ const productSchema = new Schema<IProduct>({
 
 productSchema.path('type').validate(function(value) {
     const validComputerCategory = ['Desktop', 'Laptop', 'Tablet', 'AllInOne'];
-    const validPartCategory = ['Mob', 'Psu', 'Gpu', 'Cpu', 'Ram', 'Case'];
-    const validPeripheralCategory = ['Monitor', 'Mouse', 'Keyboard'];
+    const validPartCategory = ['Mob', 'Psu', 'Gpu', 'Cpu', 'Ram', 'Case', 'Cooler', 'Storage'];
+    const validPeripheralCategory = ['Monitor', 'Mouse', 'Keyboard', 'Keyboard-Mouse', 'MousePad', 'Fan', 'ThermalPaste', 'Headset-Mic'];
 
     // if the type(value) is Computer   ==> category must be validComputerCategory
     // if the type(value) is Part       ==> category must be validPartCategory
@@ -120,7 +114,7 @@ productSchema.path('type').validate(function(value) {
         return false;
     }
 
-}, "Type does not match Category");
+}, "Type does not match Category akka");
 
 // Pc type
 const desktopSchema = new Schema({

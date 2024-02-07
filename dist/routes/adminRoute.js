@@ -41,8 +41,8 @@ router.patch('/product/:prodId', loggedIn_1.default, isadmin_1.default, adminCon
 // Delete /admin/product/:prodId
 router.delete('/product/:prodId', loggedIn_1.default, isadmin_1.default, adminController.DeleteProd);
 // Post /admin/:userId
-router.patch('/:userId', loggedIn_1.default, isadmin_1.default, adminController.MakeAdmin);
+// router.patch('/:userId', isLoggedIn, isAdmin, adminController.MakeAdmin);
 // Delete /admin/:userId
-router.delete('/:userId', loggedIn_1.default, isadmin_1.default, adminController.DeleteUser);
+// router.delete('/:userId', isLoggedIn, isAdmin, adminController.DeleteUser);
 exports.default = router;
 //# sourceMappingURL=adminRoute.js.map
