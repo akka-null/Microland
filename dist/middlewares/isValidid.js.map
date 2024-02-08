@@ -1,1 +1,0 @@
-{"version":3,"file":"isValidid.js","sourceRoot":"","sources":["../../serverLand/middlewares/isValidid.ts"],"names":[],"mappings":";;AACA,uCAA0C;AAE1C,MAAM,SAAS,GAAmB,KAAK,EAAE,GAAG,EAAE,GAAG,EAAE,IAAI,EAAE,EAAE;IACvD,IAAI,IAAA,0BAAe,EAAC,GAAG,CAAC,MAAM,CAAC,EAAE,CAAC,EAAE,CAAC;QACjC,IAAI,EAAE,CAAC;IACX,CAAC;IACD,mBAAmB;IACnB,MAAM;IACN,aAAa;AACjB,CAAC,CAAA;AAED,kBAAe,SAAS,CAAC"}

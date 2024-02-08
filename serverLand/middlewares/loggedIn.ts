@@ -8,7 +8,7 @@ export const isLoggedIn: RequestHandler = async (req, res, next) => {
     const token = req.cookies.loginCookie;
     if (!token) {
         res.status(401);
-        next(Error('Login First'));
+        return next(Error('Login First'));
     }
     try {
         // TODO: # avoid using as JwtPayload
