@@ -11,9 +11,9 @@ export const isLoggedIn: RequestHandler = async (req, res, next) => {
         return next(Error('Login First'));
     }
     try {
-        // TODO: # avoid using as JwtPayload
+        // TODO: # avoid using (as JwtPayload)
         const decoded = jwt.verify(token, process.env.JWT_SECRET_TOKEN!) as JwtPayload;
-        const user = await User.findById(decoded.userId, '-password');
+        const user = await User.findById(decoded.userId);
         if (user) {
             req.user = user;
             next();

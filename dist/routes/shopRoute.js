@@ -29,22 +29,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const router = (0, express_1.Router)();
 const shopController = __importStar(require("../controllers/shopController"));
-const iscostumer_1 = __importDefault(require("../middlewares/iscostumer"));
-const loggedIn_1 = __importDefault(require("../middlewares/loggedIn"));
+const typeMatchCategory_1 = __importDefault(require("../middlewares/typeMatchCategory"));
 const express_validator_1 = require("express-validator");
-const isvalidid_1 = __importDefault(require("../middlewares/isvalidid"));
 router.get("/products", shopController.getProducts);
-router.get("/product/:prodId", shopController.getProductById);
+router.get("/product/:prodId", (0, express_validator_1.param)("prodId").isMongoId().withMessage("invalid ID"), shopController.getProductById);
 router.get("/products/:productType", shopController.getProductByType);
-router.get("/products/:productType/:productCategory", shopController.getProductByCategory);
-router.post("/review/:prodId", isvalidid_1.default, (0, express_validator_1.body)("rate").isIn(["1", "2", "3", "4", "5"]).withMessage("1-5 are allowed as rating values"), loggedIn_1.default, iscostumer_1.default, shopController.postReview);
-// costumer orders
-// create an order
-// router.post("/order", shopController.postOrder);
-// costumer see all the past orders
-// router.get("/orders", shopController.getOrders); 
-// admin orders
-// see all the pending orders
-// see all the orders
+router.get("/products/:productType/:productCategory", typeMatchCategory_1.default, shopController.getProductByCategory);
+router.get("/top", shopController.topProds);
+router.get("/latest", shopController.latestProd);
 exports.default = router;
 //# sourceMappingURL=shopRoute.js.map

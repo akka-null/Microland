@@ -26,23 +26,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// FIX: * make sure all the routes all working (here and in postman)
 const express_1 = require("express");
 const router = (0, express_1.Router)();
 const adminController = __importStar(require("../controllers/adminController"));
 const loggedIn_1 = __importDefault(require("../middlewares/loggedIn"));
 const isadmin_1 = __importDefault(require("../middlewares/isadmin"));
-// get /admin
-router.get("/", loggedIn_1.default, isadmin_1.default, adminController.getDashBoard);
-// post /admin/product
-router.post("/product", loggedIn_1.default, isadmin_1.default, adminController.addProd);
-// Patch /admin/product/:prodId
-router.patch('/product/:prodId', loggedIn_1.default, isadmin_1.default, adminController.PatchProd);
-// Delete /admin/product/:prodId
-router.delete('/product/:prodId', loggedIn_1.default, isadmin_1.default, adminController.DeleteProd);
-// Post /admin/:userId
-// router.patch('/:userId', isLoggedIn, isAdmin, adminController.MakeAdmin);
-// Delete /admin/:userId
-// router.delete('/:userId', isLoggedIn, isAdmin, adminController.DeleteUser);
+const express_validator_1 = require("express-validator");
+router.route("/product")
+    .post(loggedIn_1.default, isadmin_1.default, adminController.addProd)
+    .patch(loggedIn_1.default, isadmin_1.default, (0, express_validator_1.body)("prodId").isMongoId().withMessage("invalid ID"), adminController.PatchProd);
+router.delete('/product/:prodId', loggedIn_1.default, isadmin_1.default, (0, express_validator_1.param)("prodId").isMongoId().withMessage("invalid ID"), adminController.DeleteProd);
+router.get('/users', loggedIn_1.default, isadmin_1.default, adminController.GetUsers);
+router.route("/user/:userId")
+    .patch(loggedIn_1.default, isadmin_1.default, (0, express_validator_1.param)("userId").isMongoId().withMessage("invalid ID"), adminController.MakeAdmin)
+    .delete(loggedIn_1.default, isadmin_1.default, (0, express_validator_1.param)("userId").isMongoId().withMessage("invalid ID"), adminController.DeleteUser);
+router.get("/orders/", loggedIn_1.default, isadmin_1.default, adminController.getAllOrders);
+router.patch("/orders/:orderId/deliver", loggedIn_1.default, isadmin_1.default, (0, express_validator_1.param)("orderId").isMongoId().withMessage("invalid ID"), adminController.deliveredOrder);
 exports.default = router;
 //# sourceMappingURL=adminRoute.js.map

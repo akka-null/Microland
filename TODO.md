@@ -1,9 +1,11 @@
+- [ ] implementing rate limiting on password reset requests to prevent abuse
 - [ ] delete an account (user can delete his account and admin can delete an acount)
 - [x] refactor "forget password"
+- [ ] Pagination: should i give the client full controle over it or give a set of options(9, 12, 18, 24) ==> for now im giving the client full control
 
 ## unite testing
-- [ ] wirte a unite testing for all the edge cases
-- [ ] make sure you test each edge case possible 
+- [ ] wirte a unite testing for all the edge cases (this called 100 test covrage and it's bs)
+- [ ] wirte a valuable test instead of 100 test covrage 
 - [ ] ask your self in each function you do what can goes wrong and how should the api react to that change
 
 ## Error Handling
@@ -24,7 +26,7 @@ orders and pyments
 - [x] build a web-scraper to get data from [ouedkinss](https://www.ouedkniss.com/) store page specifecly [microland's page](https://www.ouedkniss.com/store/2236/microland-informatique-oran/)
 - [ ] checkout [cloudnary](https://cloudinary.com/)
 - [x] add pagination support to all the shop routes
-- [ ] don't rely on postman docs and learn how to implement Api doc with [openapi](https://swagger.io/specification/)
+- [x] don't rely on postman docs and learn how to implement Api doc with [openapi](https://swagger.io/specification/)
 
 
 ### DB/ orm  side
@@ -34,7 +36,6 @@ orders and pyments
     - [x] user Schema
     - [x] ~~checkout~~ (frontend stuff no need to implement on the BE)
     - [ ] user orders (not sure if we need it for space managment)
-    - [ ] user whishlist
     - [x] review schema
     - [ ] product Schema
         - [ ] logic to calc the discount factor or the discount price
@@ -61,8 +62,8 @@ orders and pyments
 - [x] HttpOnly cookie (JWT ofc)
 - [x] helmet js
 
-### ROUTES 
-- [ ] generate api doc with postman
+### Doc 
+- [ ] generate api doc with postman || oas-generator then use it the generated file with spotlight to edit it more
 
 
 ### payment support
@@ -83,60 +84,22 @@ orders and pyments
 - [ ] add input validation for user input (UX)
 
 # BackEnd side:
-- [ ] user Schema
-- [ ] product Schema
-- [ ] category Schema
+- [x] user Schema
+- [x] product Schema
+- [x] review Schema
+- [x] category Schema
 - [ ] order Schema
 
-- [ ] cors errors
+- [x] cors errors
 - [ ] csrf protection
 - [ ] set number of request are alowed on certain routes
-- [ ] helmetJS for settting security headers
+- [x] helmetJS for settting security headers
 - [ ] use Oauth to login with google account
-- [ ] jwt tokens 
+- [x] jwt tokens 
 - [ ] file upload with multer
-
-- [ ] middlewares for error handling (express handler or make your own)
-- [ ] middlewares is for validation / sanitizing 
-- [ ] middlewares is logedin
-- [ ] middlewares is admin
-- [ ] middlewares is auth
 
 - [ ] Routes
 - [ ] test all the Routes with postman
 
-- [ ]  look for better deployment for DZ website
 - [ ]  Docker and should you use it
-
-## Schema 
-### user 
-- username
-- email
-- password
-- confirmPassword
-- role
-### product 
-- title
-- quantity
-- price 
-- category
-- brand
-
-### Route structure 
-## auth route
-- BaseURL/register
-- BaseURL/login
-- BaseURL/logout
-
-## admin route
-- BaseURL/admin ( or at / if we are as admin we can see a drop down menu for an admin to manage orders and products and users)
-  GET    /admin/products/
-  GET    /admin/products/:prodID
-  POST   /admin/edits-products
-  DELETE /admin/products
-
-## shop route(product)
-  GET /product/
-  GET /product/:prodId
-  GET /product/:category/:subCategory/
 

@@ -1,25 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Ram = exports.Cpu = exports.Gpu = exports.Tablet = exports.Allinone = exports.Laptop = exports.Desktop = exports.Product = void 0;
-// FIX: * add all the necessary fields to each category
-//      * create all the discriminators needed and export them
-//      * use typescript here
-//      * the nerd way of doing it 
-// NOTE: * what i mean by the nerdway of doing it is :
-//      - create a general interface for all the products (typescript related)
-//      - create a sub interfaces that extends the base products interface (typescript related)
-//      - create a base model for all the product
-//      - extend the base model with sub models like Computer | Part | Peripheral
-//     # example on why we need this 
-//     if you want to add a gpu and cpu to the DB
-//     both are sub products that extedens the base products model but
-//     CPU hase "Cores", "threads", "CashSize",.... property
-//     GPU hase "VRAM", .. 
-//     so we need to use the discriminator for that to extend the base model
-//     WARN: * the use case for this :
-//     - if you have a filter option on the website you want all the 12gb vram gpu on the DB or all the i3 cpus on the website
-//
-//     TODO: # wait for the frontend side to finish and then see if you need to use this
 const mongoose_1 = require("mongoose");
 const productSchema = new mongoose_1.Schema({
     title: {
@@ -28,7 +9,6 @@ const productSchema = new mongoose_1.Schema({
     },
     brand: {
         type: String,
-        // required: true,
     },
     price: {
         type: Number,
@@ -37,24 +17,15 @@ const productSchema = new mongoose_1.Schema({
     },
     discountFactor: {
         type: Number,
-        // min: [-1, '% starts from 0-100'],
-        // max: [100, "it's the products is free"],
-        // defualt: () => {
-        //     return (this.discount !== 0) ? (this.discount * 100) / this.price : 0
-        // }
         default: 0
     },
     discount: {
         type: Number,
-        /* default: () => {
-            return (this.price * this.discountFactor) / 100;
-        }, */
         default: 0.0,
     },
     quantity: {
         type: Number,
         required: true,
-        default: 0,
     },
     description: {
         type: String,
@@ -79,16 +50,11 @@ const productSchema = new mongoose_1.Schema({
         type: String,
         required: true
     }
-    // with strict set to false you can add fields that are not defined in the schema 
-    // }, { discriminatorKey: 'category', strict: false }); 
 }, { discriminatorKey: 'category', timestamps: true });
 productSchema.path('type').validate(function (value) {
     const validComputerCategory = ['Desktop', 'Laptop', 'Tablet', 'AllInOne'];
     const validPartCategory = ['Mob', 'Psu', 'Gpu', 'Cpu', 'Ram', 'Case', 'Cooler', 'Storage'];
     const validPeripheralCategory = ['Monitor', 'Mouse', 'Keyboard', 'Keyboard-Mouse', 'MousePad', 'Fan', 'ThermalPaste', 'Headset-Mic'];
-    // if the type(value) is Computer   ==> category must be validComputerCategory
-    // if the type(value) is Part       ==> category must be validPartCategory
-    // if the type(value) is Peripheral ==> category must be validPeripheralCategroy
     if (value === 'Computer' && !validComputerCategory.includes(this.category)) {
         return false;
     }
@@ -99,7 +65,6 @@ productSchema.path('type').validate(function (value) {
         return false;
     }
 }, "Type does not match Category akka");
-// Pc type
 const desktopSchema = new mongoose_1.Schema({
     mob: String,
     ram: String,
@@ -116,7 +81,6 @@ const laptopSchema = new mongoose_1.Schema({
     gpu: String,
     display: String,
     storage: String,
-    // we need to add more
 });
 const allinoneSchema = new mongoose_1.Schema({
     display: String,
@@ -133,33 +97,18 @@ const tabletSchema = new mongoose_1.Schema({
     battry: String,
     storage: String,
 });
-// pc parts 
-// mob
 const mobSchema = new mongoose_1.Schema({
-    size: String, // atx micro atx
+    size: String,
 });
-// gpu
 const gpuSchema = new mongoose_1.Schema({
     vram: String,
 });
-// cpu
 const cpuSchema = new mongoose_1.Schema({
     cores: Number,
 });
-// ram
 const ramSchema = new mongoose_1.Schema({
     speed: String
 });
-// case 
-// storage 
-// cooler
-// perepherals
-// mouse 
-// keyboard
-// mousepad
-// speaker
-// headset
-// monitor
 const Product = (0, mongoose_1.model)('Product', productSchema);
 exports.Product = Product;
 const Desktop = Product.discriminator('Desktop', desktopSchema);
@@ -176,5 +125,4 @@ const Cpu = Product.discriminator('Cpu', cpuSchema);
 exports.Cpu = Cpu;
 const Ram = Product.discriminator('Ram', ramSchema);
 exports.Ram = Ram;
-// export default mongoose.model("Product", productSchema);
 //# sourceMappingURL=productModel-nerdway.js.map

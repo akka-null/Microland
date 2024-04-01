@@ -15,9 +15,8 @@ const isLoggedIn = async (req, res, next) => {
         return next(Error('Login First'));
     }
     try {
-        // TODO: # avoid using as JwtPayload
         const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET_TOKEN);
-        const user = await userModel_1.User.findById(decoded.userId, '-password');
+        const user = await userModel_1.User.findById(decoded.userId);
         if (user) {
             req.user = user;
             next();

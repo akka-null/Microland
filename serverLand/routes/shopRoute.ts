@@ -1,32 +1,27 @@
 import { Router } from "express";
 const router = Router();
 import * as shopController from "../controllers/shopController";
-import isCostumer from "../middlewares/iscostumer";
-import isLoggedIn from "../middlewares/loggedIn";
-import { body } from "express-validator";
-import isValidId from "../middlewares/isvalidid";
+import match from "../middlewares/typeMatchCategory";
+import { param } from "express-validator";
+import bodyParser from "body-parser";
 
+// get all products
 router.get("/products", shopController.getProducts);
-router.get("/product/:prodId", shopController.getProductById);
 
+// get product by id
+router.get("/product/:prodId",
+    param("prodId").isMongoId().withMessage("invalid ID"),
+    shopController.getProductById);
+
+// get product
 router.get("/products/:productType", shopController.getProductByType);
-router.get("/products/:productType/:productCategory", shopController.getProductByCategory);
+router.get("/products/:productType/:productCategory", match, shopController.getProductByCategory);
 
-router.post("/review/:prodId",
-    isValidId,
-    body("rate").isIn(["1", "2", "3", "4", "5"]).withMessage("1-5 are allowed as rating values"),
-    isLoggedIn,
-    isCostumer,
-    shopController.postReview);
+router.get("/top", shopController.topProds);
+router.get("/latest", shopController.latestProd);
 
-// costumer orders
-// create an order
-// router.post("/order", shopController.postOrder);
-// costumer see all the past orders
-// router.get("/orders", shopController.getOrders); 
-
-// admin orders
-// see all the pending orders
-// see all the orders
+// TODO: stripe webhook to fulful the order 
+router.get("/orders/stripe/result", shopController.orderPaymentResult);
+router.post("/orders/stripe/fulfill", bodyParser.raw({ type: 'application/json' }), shopController.stripeFulfillOrder);
 
 export default router;

@@ -8,7 +8,6 @@ const isCostumer = async (req, res, next) => {
     else {
         res.status(403);
         next(Error("Admin cannot that"));
-        // next(Error("Admin cannot give reviews"));
     }
 };
 exports.isCostumer = isCostumer;

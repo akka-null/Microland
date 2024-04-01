@@ -6,7 +6,7 @@ import { User } from "../models/userModel";
 import isLoggedIn from "../middlewares/loggedIn";
 const router = Router();
 
-// signup  || register
+// signup  
 router.post(
     "/register",
     body("username")
@@ -48,7 +48,7 @@ router.post(
         .escape()
         .isEmail()
         .withMessage("Please use a valid E-mail address"), // email validation / sanitazing
-    body("password", "Please use a valid password").isLength({ min: 5 }),
+    body("password").trim(),
     authController.login
 );
 
@@ -80,4 +80,5 @@ router.post("/reset/:passToken",
     }),
     authController.resetPassword);
 
+// TODO: google Oauth
 export default router;

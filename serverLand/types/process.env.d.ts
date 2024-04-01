@@ -4,6 +4,10 @@ declare global {
             NODE_ENV: string;
             PORT: number;
             URI: string;
+            STRIPE_KEY: string;
+            STRIPE_WHSEC: string;
+            CURRENCY: string;
+            SHIPMENT_COST: number;
 
             JWT_SECRET_TOKEN: string;
 

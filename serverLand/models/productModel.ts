@@ -1,13 +1,12 @@
 // FIX: * add all the necessary fields to each category
 //      * create all the discriminators needed and export them
 //      * use typescript here
-import { Schema, model } from "mongoose";
-import { User } from "./userModel";
+import { ObjectId, Schema, model } from "mongoose";
 
 export interface IReview {
-    name: string;
+    username: string;
     email: string;
-    userId: string;
+    _id: string | ObjectId | undefined;
     comment: string;
     rate: number;
 }
@@ -31,7 +30,7 @@ export interface IProduct {
 }
 
 const reviewSchema = new Schema<IReview>({
-    name: {
+    username: {
         type: String,
         required: true,
     },
@@ -39,8 +38,9 @@ const reviewSchema = new Schema<IReview>({
         type: String,
         required: true,
     },
-    userId: {
+    _id: {
         type: String,
+        required: true,
     },
     comment: {
         type: String,
@@ -64,12 +64,11 @@ const productSchema = new Schema<IProduct>({
     price: {
         type: Number,
         required: true,
-        default: 0.0,
     },
     quantity: {
         type: Number,
         required: true,
-        default: 0,
+        default: 1
     },
     description: {
         type: String,

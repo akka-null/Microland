@@ -42,7 +42,8 @@ npm run drop
 * i will try to build the frontend with Vue (try at least XD)
 
 
-### api doc
+### [Api docummentation](https://akkanull.stoplight.io/docs/microland/skyyymmzkgkqn-microland)
+- Not finished yet
 
 ## Schema 
 ### user 

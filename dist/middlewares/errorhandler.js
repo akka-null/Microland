@@ -10,7 +10,6 @@ const errorHandler = async (err, _req, res, _next) => {
     let code = res.statusCode === 200 ? 500 : res.statusCode;
     res.status(code).json({
         message: err.message,
-        stack: (process.env.NODE_ENV === 'development') ? err.stack : null
     });
 };
 exports.errorHandler = errorHandler;

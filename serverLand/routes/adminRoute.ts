@@ -1,23 +1,53 @@
-// FIX: * make sure all the routes all working (here and in postman)
 import { Router } from "express";
 const router = Router();
 import * as adminController from "../controllers/adminController";
 import isLoggedIn from "../middlewares/loggedIn";
 import isAdmin from "../middlewares/isadmin";
+import { body, param } from "express-validator";
 
-// get /admin
-router.get("/", isLoggedIn, isAdmin, adminController.getDashBoard);
-// post /admin/product
-router.post("/product", isLoggedIn, isAdmin, adminController.addProd);
-// Patch /admin/product/:prodId
-router.patch('/product/:prodId', isLoggedIn, isAdmin, adminController.PatchProd);
-// Delete /admin/product/:prodId
-router.delete('/product/:prodId', isLoggedIn, isAdmin, adminController.DeleteProd);
+// add product
+// update product
+router.route("/product")
+    .post(isLoggedIn, isAdmin, adminController.addProd)
+    .patch(
+        isLoggedIn,
+        isAdmin,
+        body("prodId").isMongoId().withMessage("invalid ID"),
+        adminController.PatchProd);
 
-// Post /admin/:userId
-// router.patch('/:userId', isLoggedIn, isAdmin, adminController.MakeAdmin);
-// Delete /admin/:userId
-// router.delete('/:userId', isLoggedIn, isAdmin, adminController.DeleteUser);
+// delete product
+router.delete('/product/:prodId',
+    isLoggedIn,
+    isAdmin,
+    param("prodId").isMongoId().withMessage("invalid ID"),
+    adminController.DeleteProd);
+
+// get all users
+router.get('/users', isLoggedIn, isAdmin, adminController.GetUsers);
+
+// update user profile to admin i guess
+// delete user 
+router.route("/user/:userId")
+    .patch(
+        isLoggedIn,
+        isAdmin,
+        param("userId").isMongoId().withMessage("invalid ID"),
+        adminController.MakeAdmin)
+    .delete(
+        isLoggedIn,
+        isAdmin,
+        param("userId").isMongoId().withMessage("invalid ID"),
+        adminController.DeleteUser);
+
+
+// get orders
+router.get("/orders/", isLoggedIn, isAdmin, adminController.getAllOrders);
+
+router.patch("/orders/:orderId/deliver",
+    isLoggedIn,
+    isAdmin,
+    param("orderId").isMongoId().withMessage("invalid ID"),
+    adminController.deliveredOrder);
 
 
 export default router;

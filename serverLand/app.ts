@@ -1,3 +1,4 @@
+// FIX: - check bearer token and should you use it or if your aproach with httponly cookie is the right call or even if your doing it the right way
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
@@ -27,6 +28,7 @@ import cookieParser from "cookie-parser";
 
 // routes
 import adminRoute from "./routes/adminRoute";
+import userRoute from "./routes/userRoute";
 import shopRoute from "./routes/shopRoute";
 import authRoute from "./routes/authRoute";
 import notFound from "./middlewares/notFound";
@@ -47,19 +49,21 @@ app.use(helmet());
 // app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(cors({ credentials: true }));
 app.use(logger("dev"));
-app.use(urlencoded({ extended: false }));
-app.use(json());
-app.use(cookieParser());
+// app.use(urlencoded({ extended: false }));
+// app.use(json());
+// app.use(cookieParser());
 
 // using routes
 app.get("/", (req, res, _next) => {
-    console.log(`${req.hostname}:${PORT}`);
+    // console.log(`${req.hostname}:${PORT}`);
     res.status(200).json({ msg: "hey akka", "@": `${req.hostname}:${PORT}` });
     // next(Error('hey akka'));
 });
-app.use("/admin", adminRoute);
-app.use(shopRoute);
-app.use(authRoute);
+
+app.use("/api", adminRoute);
+app.use("/api", userRoute);
+app.use("/api", shopRoute);
+app.use("/api", authRoute);
 app.use(notFound);
 app.use(errorHandler);
 

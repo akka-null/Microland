@@ -6,7 +6,7 @@ export interface IUser {
     email: string;
     password: string;
     isAdmin?: boolean;
-    emailConfirmed?: boolean;
+    emailVerified?: boolean;
 }
 
 const userSchema = new Schema<IUser>({
@@ -28,7 +28,7 @@ const userSchema = new Schema<IUser>({
         default: false,
         // select: false
     },
-    emailConfirmed: {
+    emailVerified: {
         type: Boolean,
         default: false,
         // select: false

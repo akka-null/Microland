@@ -14,17 +14,14 @@ const userSchema = new mongoose_1.Schema({
     password: {
         type: String,
         required: true,
-        // select: false
     },
     isAdmin: {
         type: Boolean,
         default: false,
-        // select: false
     },
-    emailConfirmed: {
+    emailVerified: {
         type: Boolean,
         default: false,
-        // select: false
     },
 });
 exports.User = (0, mongoose_1.model)("User", userSchema);
