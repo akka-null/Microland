@@ -3,14 +3,17 @@
   "version": "1.0.0",
   "description": "MicroLand",
   "main": "dist/app.js",
-  "pre-commit": [ "build" ],
+  "pre-commit": [
+    "build"
+  ],
   "scripts": {
     "start": "node dist/app.js",
     "build": "rimraf dist && tsc",
     "watch": "tsc -w",
     "dev": "nodemon dist/app.js",
     "seed": "node dist/data/seed.js",
-    "drop": "node dist/data/seed.js -drop"
+    "drop": "node dist/data/seed.js -drop",
+    "stripe": "stripe listen --forward-to localhost:3030/api/orders/stripe/fulfill"
   },
   "author": "akka",
   "license": "MIT",
@@ -28,7 +31,8 @@
     "mongoose": "^8.0.1",
     "morgan": "^1.10.0",
     "nodemailer": "^6.9.7",
-    "nodemailer-mailgun-transport": "^2.1.5"
+    "nodemailer-mailgun-transport": "^2.1.5",
+    "stripe": "^14.20.0"
   },
   "overrides": {
     "whatwg-url": "13.0.0",
@@ -46,6 +50,7 @@
     "@types/node": "^20.11.0",
     "@types/nodemailer": "^6.4.14",
     "@types/nodemailer-mailgun-transport": "^1.4.6",
+    "@types/stripe-v3": "^3.1.33",
     "nodemon": "^3.0.1",
     "pre-commit": "^1.2.2",
     "rimraf": "^5.0.5",

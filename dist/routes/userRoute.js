@@ -39,7 +39,9 @@ router.route("/user")
 router.post("/review/:prodId", loggedIn_1.default, iscostumer_1.default, (0, express_validator_1.body)("rate").isIn(["1", "2", "3", "4", "5"]).withMessage("1-5 are allowed as rating values"), (0, express_validator_1.param)("prodId").isMongoId().withMessage("invalid ID"), userController.postReview);
 router.post("/orders/", loggedIn_1.default, iscostumer_1.default, (0, express_validator_1.body)("email").trim().escape().isEmail().withMessage("Please use a valid E-mail address"), (0, express_validator_1.body)("firstName").trim().escape(), (0, express_validator_1.body)("lastName").trim().escape(), (0, express_validator_1.body)("phone").trim().escape().isMobilePhone('ar-DZ').withMessage('not an algerian number'), userController.addOrder);
 router.get("/orders/mine", loggedIn_1.default, iscostumer_1.default, userController.getOrders);
-router.get("/orders/:orderId", loggedIn_1.default, (0, express_validator_1.param)("orderId").isMongoId().withMessage("invalid ID"), userController.getOrderById);
-router.patch("/orders/:orderId/pay", loggedIn_1.default, iscostumer_1.default, (0, express_validator_1.param)("orderId").isMongoId().withMessage("invalid ID"), userController.payOrder);
+router.route("/orders/:orderId")
+    .get(loggedIn_1.default, (0, express_validator_1.param)("orderId").isMongoId().withMessage("invalid ID"), userController.getOrderById)
+    .post(loggedIn_1.default, iscostumer_1.default, (0, express_validator_1.param)("orderId").isMongoId().withMessage("invalid ID"), userController.payOrder);
+router.use("/orders/:orderId/pay", (0, express_validator_1.param)("orderId").isMongoId().withMessage("invalid ID"), userController.payOrder);
 exports.default = router;
 //# sourceMappingURL=userRoute.js.map

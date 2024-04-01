@@ -31,11 +31,14 @@ const router = (0, express_1.Router)();
 const shopController = __importStar(require("../controllers/shopController"));
 const typeMatchCategory_1 = __importDefault(require("../middlewares/typeMatchCategory"));
 const express_validator_1 = require("express-validator");
+const body_parser_1 = __importDefault(require("body-parser"));
 router.get("/products", shopController.getProducts);
 router.get("/product/:prodId", (0, express_validator_1.param)("prodId").isMongoId().withMessage("invalid ID"), shopController.getProductById);
 router.get("/products/:productType", shopController.getProductByType);
 router.get("/products/:productType/:productCategory", typeMatchCategory_1.default, shopController.getProductByCategory);
 router.get("/top", shopController.topProds);
 router.get("/latest", shopController.latestProd);
+router.get("/orders/stripe/result", shopController.orderPaymentResult);
+router.post("/orders/stripe/fulfill", body_parser_1.default.raw({ type: 'application/json' }), shopController.stripeFulfillOrder);
 exports.default = router;
 //# sourceMappingURL=shopRoute.js.map
