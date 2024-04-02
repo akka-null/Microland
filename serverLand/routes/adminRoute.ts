@@ -43,11 +43,11 @@ router.route("/user/:userId")
 // get orders
 router.get("/orders/", isLoggedIn, isAdmin, adminController.getAllOrders);
 
+// udpate the order to be delivred
 router.patch("/orders/:orderId/deliver",
     isLoggedIn,
     isAdmin,
     param("orderId").isMongoId().withMessage("invalid ID"),
     adminController.deliveredOrder);
-
 
 export default router;

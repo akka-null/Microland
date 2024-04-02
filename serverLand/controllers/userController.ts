@@ -215,9 +215,6 @@ export const payOrder: RequestHandler = async (req, res, next) => {
         });
 
         // adding shipment cost to total
-        // TODO: work on the else
-        // TODO: check the pyment method : - stripe [x] still the finish part on the shop controller
-        //                                 - chargily [ ] 
         if (order.shipmentMethod === 'Deliver') {
             line_items.push({
                 price_data: {
@@ -238,9 +235,12 @@ export const payOrder: RequestHandler = async (req, res, next) => {
             currency: process.env.CURRENCY,
             // TODO:
             // - see the invoice for stripe
+            // success_url: 'http://localhost:3030/api/orders/stripe/result/?sucess=true',
+            // cancel_url: 'http://localhost:3030/api/orders/stripe/result/?canceled=true',
             success_url: 'http://localhost:3030/api/orders/stripe/result/?sucess=true',
             cancel_url: 'http://localhost:3030/api/orders/stripe/result/?canceled=true',
-            // NOTE: what you wanna storeas metadata think about it 
+            // NOTE: what you wanna store as metadata think about it 
+            // WARN: i think we only need the orderid here 
             metadata: {
                 order_id: `${order._id}`,
                 user: `${req.user?._id}`,

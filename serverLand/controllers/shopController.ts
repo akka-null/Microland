@@ -153,7 +153,7 @@ export const stripeFulfillOrder: RequestHandler = async (req, res, next) => {
                 order.paidAt = new Date(Date.now());
 
                 await order.save();
-                // NOTE: - send receipt email 
+                // TODO: - send receipt email 
                 res.status(200).end();
             }
             else {

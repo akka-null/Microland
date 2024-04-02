@@ -49,15 +49,13 @@ app.use(helmet());
 // app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(cors({ credentials: true }));
 app.use(logger("dev"));
-// app.use(urlencoded({ extended: false }));
-// app.use(json());
-// app.use(cookieParser());
+app.use(urlencoded({ extended: false }));
+app.use(json());
+app.use(cookieParser());
 
 // using routes
 app.get("/", (req, res, _next) => {
-    // console.log(`${req.hostname}:${PORT}`);
-    res.status(200).json({ msg: "hey akka", "@": `${req.hostname}:${PORT}` });
-    // next(Error('hey akka'));
+    res.status(200).json({ msg: "hey akka", "@": `${req.hostname}` });
 });
 
 app.use("/api", adminRoute);
