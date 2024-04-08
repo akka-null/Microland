@@ -52,11 +52,11 @@ router.route("/orders/:orderId")
         isLoggedIn,
         param("orderId").isMongoId().withMessage("invalid ID"),
         userController.getOrderById)
-    .post( // NOTE: this will be called from the client
+    .post( 
         isLoggedIn,
         isCostumer,
         param("orderId").isMongoId().withMessage("invalid ID"),
-        userController.payOrder); // FIX: should we redirect
+        userController.payOrder); 
 
 // WARN: pay order this from the browser just for testing and redirecting 
 router.get("/orders/:orderId/pay/akka",

@@ -19,7 +19,6 @@ router.get("/products/:productType/:productCategory", match, shopController.getP
 router.get("/top", shopController.topProds);
 router.get("/latest", shopController.latestProd);
 
-// TODO: stripe webhook to fulful the order 
 router.get("/orders/stripe/result", shopController.orderPaymentResult);
 
 export default router;

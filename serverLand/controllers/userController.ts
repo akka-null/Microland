@@ -114,8 +114,6 @@ export const addOrder: RequestHandler = async (req, res, next) => {
     // WARN: never trust the prices from the Front End
     try {
         const prods = await Product.find({ _id: { $in: items.map(e => e._id) } });
-
-        // NOTE: o(n^2): map over the items while taking the price of each item from the db and storing them into orderItems
         const orderItems = items.map(item => {
             const matched = prods.find(prod => item._id.toString() === prod._id.toString());
             return {
@@ -228,19 +226,20 @@ export const payOrder: RequestHandler = async (req, res, next) => {
             });
         }
 
+        //creatring the base url
+        let base_url = (process.env.NODE_ENV === "development") ? "http://" + req.hostname + ":" + process.env.PORT : "https://" + req.hostname;
+        const url_success = base_url + "/api/orders/stripe/result/?sucess=true";
+        const url_cancel = base_url + "/api/orders/stripe/result/?canceled=true";
+
+        // TODO:
+        // - see the invoice for stripe
         const session = await stripe.checkout.sessions.create({
             client_reference_id: order?._id.toString(),
             line_items,
             mode: 'payment',
             currency: process.env.CURRENCY,
-            // TODO:
-            // - see the invoice for stripe
-            // success_url: 'http://localhost:3030/api/orders/stripe/result/?sucess=true',
-            // cancel_url: 'http://localhost:3030/api/orders/stripe/result/?canceled=true',
-            success_url: 'http://localhost:3030/api/orders/stripe/result/?sucess=true',
-            cancel_url: 'http://localhost:3030/api/orders/stripe/result/?canceled=true',
-            // NOTE: what you wanna store as metadata think about it 
-            // WARN: i think we only need the orderid here 
+            success_url: url_success,
+            cancel_url: url_cancel,
             metadata: {
                 order_id: `${order._id}`,
                 user: `${req.user?._id}`,

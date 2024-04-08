@@ -185,13 +185,16 @@ const payOrder = async (req, res, next) => {
                 quantity: 1,
             });
         }
+        let base_url = (process.env.NODE_ENV === "development") ? "http://" + req.hostname + ":" + process.env.PORT : "https://" + req.hostname;
+        const url_success = base_url + "/api/orders/stripe/result/?sucess=true";
+        const url_cancel = base_url + "/api/orders/stripe/result/?canceled=true";
         const session = await stripe.checkout.sessions.create({
             client_reference_id: order?._id.toString(),
             line_items,
             mode: 'payment',
             currency: process.env.CURRENCY,
-            success_url: 'http://localhost:3030/api/orders/stripe/result/?sucess=true',
-            cancel_url: 'http://localhost:3030/api/orders/stripe/result/?canceled=true',
+            success_url: url_success,
+            cancel_url: url_cancel,
             metadata: {
                 order_id: `${order._id}`,
                 user: `${req.user?._id}`,

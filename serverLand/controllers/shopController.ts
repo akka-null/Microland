@@ -115,14 +115,12 @@ export const latestProd: RequestHandler = async (_req, res, next) => {
 // @access /public
 export const orderPaymentResult: RequestHandler = async (req, res, next) => {
     if (req.query.sucess) {
-        // sucess we should redirect to my orders
-        // let the frontend do the redirection
+        // TODO: redirect to "my orders" or soemthing (frontend stuff)
         res.status(200)
             .json({ message: "Sucess" });
     }
     else {
-        // user cancled the payment process of the order we shoul redirect to my orders
-        // let the frontend do the redirection
+        // TODO: redirect to "my orders" or soemthing (frontend stuff)
         res.status(400)
             .json({ message: "Canceled" });
     }

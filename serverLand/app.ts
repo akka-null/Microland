@@ -1,23 +1,15 @@
-// FIX: - check bearer token and should you use it or if your aproach with httponly cookie is the right call or even if your doing it the right way
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 
 // TODO: must
-//          * order (cart system chekcout)
-//          * forum for algeria
 //          * chagily for algeria
-//          * stripe for real world
-//          # password recovery
 //          # OAuth with google
 //          # max try jail
-//          ## check the code all the fields sschema 
-//          ### to get hired
 //          # must create a documentaiton for the backend(api doc)
 //          # writing tests ( for now we are using postman as testing)
 //
 // depends
-// FIX: change all the error handling mechanisem 
 import compression from "compression";
 import cors from "cors";
 // import csrfProtection from "csurf";
@@ -76,8 +68,7 @@ mongoose
     .connect(process.env.URI!)
     .then((_connection) => {
         app.listen(PORT, () => {
-            // console.log(`your app is listenning or port:${PORT}...`);
-            console.log(`your app is running on: http://localhost:${PORT}`);
+            console.log(`your app is listenning on http://localhost:${PORT}...`);
         });
     })
     .catch((err) => console.log(err));

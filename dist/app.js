@@ -43,7 +43,7 @@ mongoose_1.default
     .connect(process.env.URI)
     .then((_connection) => {
     app.listen(PORT, () => {
-        console.log(`your app is running on: http://localhost:${PORT}`);
+        console.log(`your app is listenning on http://localhost:${PORT}...`);
     });
 })
     .catch((err) => console.log(err));
