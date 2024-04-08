@@ -59,7 +59,7 @@ router.route("/orders/:orderId")
         userController.payOrder); // FIX: should we redirect
 
 // WARN: pay order this from the browser just for testing and redirecting 
-router.use("/orders/:orderId/pay",
+router.get("/orders/:orderId/pay/akka",
     param("orderId").isMongoId().withMessage("invalid ID"),
     userController.payOrder);
 

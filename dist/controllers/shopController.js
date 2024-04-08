@@ -123,13 +123,13 @@ const stripeFulfillOrder = async (req, res, next) => {
                 order.isPaid = true;
                 order.paidAt = new Date(Date.now());
                 await order.save();
-                res.status(200).end();
             }
             else {
                 res.status(400);
                 next(Error('order not Found'));
             }
         }
+        res.status(200).end();
     }
     catch (error) {
         res.status(400);

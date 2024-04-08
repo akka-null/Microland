@@ -143,7 +143,6 @@ export const stripeFulfillOrder: RequestHandler = async (req, res, next) => {
             process.env.STRIPE_WHSEC,
             Math.floor(Date.now()), // helps with timezone diffrence and tolerence
         );
-
         if (event.type === 'checkout.session.completed') {
             // NOTE: checkout.session.async_payment_succeeded -> we should for this also since im not using stripe in algeria i will not go full on stripe implimentation
             const order = await Order.findById(event.data.object.client_reference_id);
@@ -154,13 +153,13 @@ export const stripeFulfillOrder: RequestHandler = async (req, res, next) => {
 
                 await order.save();
                 // TODO: - send receipt email 
-                res.status(200).end();
             }
             else {
                 res.status(400)
                 next(Error('order not Found'));
             }
         }
+        res.status(200).end();
     } catch (error) {
         res.status(400)
         next(error);

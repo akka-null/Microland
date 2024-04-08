@@ -42,6 +42,6 @@ router.get("/orders/mine", loggedIn_1.default, iscostumer_1.default, userControl
 router.route("/orders/:orderId")
     .get(loggedIn_1.default, (0, express_validator_1.param)("orderId").isMongoId().withMessage("invalid ID"), userController.getOrderById)
     .post(loggedIn_1.default, iscostumer_1.default, (0, express_validator_1.param)("orderId").isMongoId().withMessage("invalid ID"), userController.payOrder);
-router.use("/orders/:orderId/pay", (0, express_validator_1.param)("orderId").isMongoId().withMessage("invalid ID"), userController.payOrder);
+router.get("/orders/:orderId/pay/akka", (0, express_validator_1.param)("orderId").isMongoId().withMessage("invalid ID"), userController.payOrder);
 exports.default = router;
 //# sourceMappingURL=userRoute.js.map

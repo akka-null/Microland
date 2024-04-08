@@ -22,7 +22,7 @@ import compression from "compression";
 import cors from "cors";
 // import csrfProtection from "csurf";
 import helmet from "helmet";
-import { urlencoded, json } from "body-parser";
+import { urlencoded, json, raw } from "body-parser";
 import logger from "morgan";
 import cookieParser from "cookie-parser";
 
@@ -33,6 +33,7 @@ import shopRoute from "./routes/shopRoute";
 import authRoute from "./routes/authRoute";
 import notFound from "./middlewares/notFound";
 import errorHandler from "./middlewares/errorhandler";
+import { stripeFulfillOrder } from "./controllers/shopController";
 
 dotenv.config();
 const PORT = process.env.PORT! || 3050;
@@ -49,6 +50,12 @@ app.use(helmet());
 // app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(cors({ credentials: true }));
 app.use(logger("dev"));
+
+// NOTE: 
+// - stripe fulfill the order
+// - must be before we parse the request to json or any other type
+app.use("/api/orders/stripe/fulfill", raw({ type: 'application/json' }), stripeFulfillOrder);
+
 app.use(urlencoded({ extended: false }));
 app.use(json());
 app.use(cookieParser());
