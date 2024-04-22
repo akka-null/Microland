@@ -1,4 +1,3 @@
-// FIX: * make sure all the routes all working (here and in postman)
 import { Router } from "express";
 import { body } from "express-validator";
 import * as authController from "../controllers/authController";

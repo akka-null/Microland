@@ -25,7 +25,8 @@ const register = async (req, res, next) => {
         });
         await user.save();
         const emailToken = jsonwebtoken_1.default.sign({ userId: user.id, }, process.env.EMAIL_SECRET, { expiresIn: "1d", });
-        const url = `http://localhost:3030/email/${emailToken}`;
+        const base_url = (process.env.NODE_ENV === "development") ? "http://" + req.hostname + ":" + process.env.PORT : "https://" + req.hostname;
+        const url = `${base_url}/email/${emailToken}`;
         sendMail_1.mailOptions["to"] = user.email;
         sendMail_1.mailOptions.html = `Please click the link to confirm your email: <a href="${url}">${url}</a>`;
         sendMail_1.transporter.sendMail(sendMail_1.mailOptions);
@@ -99,7 +100,8 @@ const forgetPass = async (req, res, next) => {
         const user = await userModel_1.User.findOne({ email: email });
         if (user) {
             const passToken = jsonwebtoken_1.default.sign({ userId: user.id }, process.env.EMAIL_SECRET, { expiresIn: "3m" });
-            const url = `${req.hostname}:${process.env.PORT}/reset/${passToken}`;
+            const base_url = (process.env.NODE_ENV === "development") ? "http://" + req.hostname + ":" + process.env.PORT : "https://" + req.hostname;
+            const url = `${base_url}/reset/${passToken}`;
             sendMail_1.mailOptions["to"] = user.email;
             sendMail_1.mailOptions.html = `Please click the link to update your password: <a = href="${url}">${url}</a>`;
             const info = sendMail_1.transporter.sendMail(sendMail_1.mailOptions);

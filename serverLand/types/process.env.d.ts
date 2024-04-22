@@ -6,8 +6,11 @@ declare global {
             URI: string;
             STRIPE_KEY: string;
             STRIPE_WHSEC: string;
+            CHARGILY_PKEY: string;
+            CHARGILY_SKEY: string;
+            CHARGILY_MOD: 'test' | 'live';
             CURRENCY: string;
-            SHIPMENT_COST: number;
+            SHIPMENT_COST: string;
 
             JWT_SECRET_TOKEN: string;
 

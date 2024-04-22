@@ -15,11 +15,11 @@
 - [x] validObjectId middelware with mongoose
 
 orders and pyments
-- [ ] complete the order section 
-- [ ] order schema
-- [ ] create order
+- [x] complete the order section 
+- [x] order schema
+- [x] create order
 - [ ] update order 
-- [ ] stripe implemntation
+- [x] stripe implemntation
 - [ ] chargily implemntation
 
 - [x] migrate from js to ts ( should you?)

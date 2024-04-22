@@ -30,7 +30,8 @@ npm run drop
 * for now using my gmail as an Email Service
 
 ### DB choise
-* for the DB i will use both [MongooDB](https://www.mongodb.com/unstructured-data/schemaless) and [PosgreSQL](https://www.postgresql.org/) and use different branch i wanna try both in term of performance
+* main branch:  [MongooDB](https://www.mongodb.com/unstructured-data/schemaless) 
+* i will try  [PosgreSQL](https://www.postgresql.org/) in a deff branch later on
 
 #### MongooDB
 * mongoodb is schemaless and you can add anything in the DB, i wanna use[Mongoose](https://mongoosejs.com) as ODM to implement some structure: 
@@ -44,54 +45,3 @@ npm run drop
 
 ### [Api docummentation](https://akkanull.stoplight.io/docs/microland/skyyymmzkgkqn-microland)
 - Not finished yet
-
-## Schema 
-### user 
-- username
-- email
-- password
-- isAdmine
-### product 
-- title
-- quantity
-- price 
-- description
-- category
-#### type
-- Desktop
-- laptop
-- tablette
-- AllInOne
-#### parts
-- MOB
-    -intel
-    -amd
-- GPU
-    -intel
-    -amd
-    -nvidia
-- CPU
-    -intel
-    -amd
-- RAM
-- PSU
-- CASE
-- Cooling
-    -air
-    -water
-    - fans
-    - thermal paste
-- Storage
-    -sdd
-    -hdd
-#### periphrals
-- monitor
-- mouse
-- mousepad
-- keyboard
-- headset
-
-
-
-
-

@@ -21,7 +21,7 @@ export interface IOrder {
         country: string;
     };
     shipmentMethod: 'Store' | 'Deliver';
-    paymentMethod: string; // need costume validation for the route and pyment method as security  messure
+    paymentMethod: 'Stripe' | 'Chargily' | 'Hand';
     itemsPrice: number;
     shippingPrice: number;
     totalPrice: number;
@@ -51,7 +51,7 @@ const orderSchema = new Schema<IOrder>({
         country: { type: String, required: true, default: 'Algeria' },
     },
     shipmentMethod: { type: String, enum: ['Store', 'Deliver'], required: true },
-    paymentMethod: { type: String, required: true },
+    paymentMethod: { type: String, enum: ['Stripe', 'Chargily', 'Hand'] },
     shippingPrice: { type: Number, required: true, default: 0.0 },
     isPaid: { type: Boolean, required: true, default: false },
     paidAt: { type: Date },
@@ -62,5 +62,15 @@ const orderSchema = new Schema<IOrder>({
     totalPrice: { type: Number, required: true, default: 0.0 },
 
 }, { timestamps: true });
+
+orderSchema.path('shipmentMethod').validate(function(value) {
+    if (value === 'Store' && (this.paymentMethod === 'Stripe' || this.paymentMethod === 'Chargily')) {
+        return false;
+    }
+    if (value === 'Deliver' && this.paymentMethod === 'Hand') {
+        return false;
+    }
+
+}, 'shipmentMethod does not match paymentMethod');
 
 export const Order = model<IOrder>('Order', orderSchema);

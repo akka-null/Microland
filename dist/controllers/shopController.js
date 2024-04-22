@@ -3,13 +3,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.stripeFulfillOrder = exports.orderPaymentResult = exports.latestProd = exports.topProds = exports.getProductByCategory = exports.getProductByType = exports.getProductById = exports.getProducts = void 0;
+exports.chargilyFulfillOrder = exports.stripeFulfillOrder = exports.chargilyPaymentResult = exports.stripePaymentResult = exports.latestProd = exports.topProds = exports.getProductByCategory = exports.getProductByType = exports.getProductById = exports.getProducts = void 0;
 const productModel_1 = require("../models/productModel");
 const dotenv_1 = __importDefault(require("dotenv"));
 const express_validator_1 = require("express-validator");
 dotenv_1.default.config();
 const stripe_1 = __importDefault(require("stripe"));
 const orderModel_1 = require("../models/orderModel");
+const crypto_1 = require("crypto");
 const stripe = new stripe_1.default(process.env.STRIPE_KEY);
 const getProducts = async (req, res, next) => {
     const itemPerPage = req.query.itemPerPage ? +req.query.itemPerPage : process.env.ITEM_PER_PAGE;
@@ -100,17 +101,28 @@ const latestProd = async (_req, res, next) => {
     }
 };
 exports.latestProd = latestProd;
-const orderPaymentResult = async (req, res, next) => {
+const stripePaymentResult = async (req, res, next) => {
     if (req.query.sucess) {
         res.status(200)
-            .json({ message: "Sucess" });
+            .json({ message: "Stripe payment Sucess" });
     }
     else {
         res.status(400)
-            .json({ message: "Canceled" });
+            .json({ message: "Stripe payment Canceled" });
     }
 };
-exports.orderPaymentResult = orderPaymentResult;
+exports.stripePaymentResult = stripePaymentResult;
+const chargilyPaymentResult = async (req, res, next) => {
+    if (req.params.result === 'success') {
+        res.status(200)
+            .json({ message: "Chargily payment Success" });
+    }
+    else {
+        res.status(400)
+            .json({ message: "Chargily payment Canceled" });
+    }
+};
+exports.chargilyPaymentResult = chargilyPaymentResult;
 const stripeFulfillOrder = async (req, res, next) => {
     const payload = req.body;
     const sig = req.headers['stripe-signature'];
@@ -119,9 +131,9 @@ const stripeFulfillOrder = async (req, res, next) => {
         event = stripe.webhooks.constructEvent(payload, sig, process.env.STRIPE_WHSEC, Math.floor(Date.now()));
         if (event.type === 'checkout.session.completed') {
             const order = await orderModel_1.Order.findById(event.data.object.client_reference_id);
-            if (order) {
+            if (order && !order.isPaid) {
                 order.isPaid = true;
-                order.paidAt = new Date(Date.now());
+                order.paidAt = new Date();
                 await order.save();
             }
             else {
@@ -137,4 +149,36 @@ const stripeFulfillOrder = async (req, res, next) => {
     }
 };
 exports.stripeFulfillOrder = stripeFulfillOrder;
+const chargilyFulfillOrder = async (req, res, next) => {
+    const signature = req.headers['signature'];
+    const payload = JSON.stringify(req.body);
+    if (!signature)
+        return res.status(400).end();
+    const calcSig = (0, crypto_1.createHmac)('sha256', process.env.CHARGILY_SKEY)
+        .update(payload)
+        .digest('hex');
+    const event = req.body;
+    try {
+        const order = await orderModel_1.Order.findById(event.data.metadata.order_id);
+        if (order && !order.isPaid) {
+            switch (event.type) {
+                case 'checkout.paid':
+                    order.isPaid = true;
+                    order.paidAt = new Date();
+                    const updated = await order.save();
+                    if (updated)
+                        return res.status(200).end();
+                    break;
+                case 'checkout.failed':
+                    res.status(400).end();
+                    break;
+            }
+        }
+        res.status(200).end();
+    }
+    catch (error) {
+        next(error);
+    }
+};
+exports.chargilyFulfillOrder = chargilyFulfillOrder;
 //# sourceMappingURL=shopController.js.map

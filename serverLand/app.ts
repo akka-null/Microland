@@ -8,7 +8,7 @@ import mongoose from "mongoose";
 //          # max try jail
 //          # must create a documentaiton for the backend(api doc)
 //          # writing tests ( for now we are using postman as testing)
-//
+
 // depends
 import compression from "compression";
 import cors from "cors";
@@ -24,8 +24,8 @@ import userRoute from "./routes/userRoute";
 import shopRoute from "./routes/shopRoute";
 import authRoute from "./routes/authRoute";
 import notFound from "./middlewares/notFound";
-import errorHandler from "./middlewares/errorhandler";
 import { stripeFulfillOrder } from "./controllers/shopController";
+import errorHandler from "./middlewares/errorhandler";
 
 dotenv.config();
 const PORT = process.env.PORT! || 3050;
@@ -43,9 +43,8 @@ app.use(helmet());
 app.use(cors({ credentials: true }));
 app.use(logger("dev"));
 
-// NOTE: 
-// - stripe fulfill the order
-// - must be before we parse the request to json or any other type
+// NOTE: stripe fulfill the order
+//      - must be before we parse the request to json or any other type
 app.use("/api/orders/stripe/fulfill", raw({ type: 'application/json' }), stripeFulfillOrder);
 
 app.use(urlencoded({ extended: false }));

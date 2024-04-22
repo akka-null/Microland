@@ -37,6 +37,8 @@ router.get("/products/:productType", shopController.getProductByType);
 router.get("/products/:productType/:productCategory", typeMatchCategory_1.default, shopController.getProductByCategory);
 router.get("/top", shopController.topProds);
 router.get("/latest", shopController.latestProd);
-router.get("/orders/stripe/result", shopController.orderPaymentResult);
+router.get("/orders/stripe/result", shopController.stripePaymentResult);
+router.get("/orders/chargily/result/:result", shopController.chargilyPaymentResult);
+router.post("/orders/chargily/fulfill", shopController.chargilyFulfillOrder);
 exports.default = router;
 //# sourceMappingURL=shopRoute.js.map

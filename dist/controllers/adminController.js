@@ -127,9 +127,10 @@ const deliveredOrder = async (req, res, next) => {
     }
     try {
         const order = await orderModel_1.Order.findById(req.params.orderId);
-        if (order && order.isDelivered == false) {
+        if (order && !order.isDelivered) {
+            order.status = 'Delivered';
             order.isDelivered = true;
-            order.deliveredAt = new Date;
+            order.deliveredAt = new Date();
             const updatedOrder = await order.save();
             res.json(updatedOrder);
         }

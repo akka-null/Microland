@@ -1,4 +1,3 @@
-// FIX: * you are inconsitant wiht your error msg some time ERROR some time Error and the other time error fix it 
 import { RequestHandler } from "express";
 import { mailOptions, transporter } from "../utils/sendMail";
 import bcrypt from "bcryptjs";
@@ -29,10 +28,9 @@ export const register: RequestHandler = async (req, res, next) => {
         await user.save();
         // creating a token for confirmation email
         const emailToken = jwt.sign({ userId: user.id, }, process.env.EMAIL_SECRET!, { expiresIn: "1d", });
-
-        // TODO: work on the emial template
-        // TODO: fix the url
-        const url = `http://localhost:3030/email/${emailToken}`;
+        // TODO: work on the email template
+        const base_url = (process.env.NODE_ENV === "development") ? "http://" + req.hostname + ":" + process.env.PORT : "https://" + req.hostname;
+        const url = `${base_url}/email/${emailToken}`;
 
         mailOptions["to"] = user.email;
         mailOptions.html = `Please click the link to confirm your email: <a href="${url}">${url}</a>`;
@@ -50,13 +48,11 @@ export const register: RequestHandler = async (req, res, next) => {
 // @access  private
 export const Emailvalidation: RequestHandler = async (req, res, next) => {
     try {
-        // TODO: do wee need to validate the token beforeHand or just let it to catch
         const decoded = jwt.verify(req.params.emailToken!, process.env.EMAIL_SECRET!) as JwtPayload;
-
         await User.updateOne({ _id: decoded.userId }, { emailVerified: true });
+
         res.status(200).json("your email has been confirmed ");
     } catch (error) {
-        // TODO: test what happend if the updateOne failed
         res.status(400);
         next(Error('Invalid or expired token'));
     }
@@ -94,9 +90,9 @@ export const login: RequestHandler = async (req, res, next) => {
             res.cookie("loginCookie", token, {
                 httpOnly: true,
                 sameSite: "strict", // prevent csrf attacks
-                secure: process.env.NODE_ENV !== "development", // we are in dev so dev !== dev will give false
+                secure: process.env.NODE_ENV !== "development", 
                 // NOTE: * if you don't set the maxAge it will be a session coookie
-                maxAge: 1000 * 60 * 30, // ms i want to give it 5 min
+                maxAge: 1000 * 60 * 30, // ms ==> 30 min
             })
                 .status(200).json({ msg: "login succesfully!" });
         }
@@ -128,13 +124,12 @@ export const forgetPass: RequestHandler = async (req, res, next) => {
         if (user) {
             // creating a password reset token and sending it thorugh an email
             const passToken = jwt.sign({ userId: user.id }, process.env.EMAIL_SECRET!, { expiresIn: "3m" });
+            const base_url = (process.env.NODE_ENV === "development") ? "http://" + req.hostname + ":" + process.env.PORT : "https://" + req.hostname;
+            const url = `${base_url}/reset/${passToken}`;
 
-            // TODO: fix the url use envirment variable
-            // const url = `http://localhost:3030/reset/${passToken}`;
-            const url = `${req.hostname}:${process.env.PORT}/reset/${passToken}`;
             mailOptions["to"] = user.email;
             mailOptions.html = `Please click the link to update your password: <a = href="${url}">${url}</a>`;
-            //
+
             // Send the email
             const info = transporter.sendMail(mailOptions);
             res.json({

@@ -22,7 +22,7 @@ const orderSchema = new mongoose_1.Schema({
         country: { type: String, required: true, default: 'Algeria' },
     },
     shipmentMethod: { type: String, enum: ['Store', 'Deliver'], required: true },
-    paymentMethod: { type: String, required: true },
+    paymentMethod: { type: String, enum: ['Stripe', 'Chargily', 'Hand'] },
     shippingPrice: { type: Number, required: true, default: 0.0 },
     isPaid: { type: Boolean, required: true, default: false },
     paidAt: { type: Date },
@@ -32,5 +32,13 @@ const orderSchema = new mongoose_1.Schema({
     itemsPrice: { type: Number, required: true, default: 0.0 },
     totalPrice: { type: Number, required: true, default: 0.0 },
 }, { timestamps: true });
+orderSchema.path('shipmentMethod').validate(function (value) {
+    if (value === 'Store' && (this.paymentMethod === 'Stripe' || this.paymentMethod === 'Chargily')) {
+        return false;
+    }
+    if (value === 'Deliver' && this.paymentMethod === 'Hand') {
+        return false;
+    }
+}, 'shipmentMethod does not match paymentMethod');
 exports.Order = (0, mongoose_1.model)('Order', orderSchema);
 //# sourceMappingURL=orderModel.js.map

@@ -3,11 +3,12 @@ import { Product } from "../models/productModel";
 import { matchedData, validationResult } from "express-validator";
 import { compare } from "bcryptjs";
 import { User } from "../models/userModel";
-import { IOrder, Items, Order } from "../models/orderModel";
+import { Items, Order } from "../models/orderModel";
 import dotenv, { config } from "dotenv";
 dotenv.config();
-import Stripe from "stripe";
-const stripe = new Stripe(process.env.STRIPE_KEY);
+import { stripePay } from "../utils/stripe";
+import { chargilyPay } from "../utils/chargily";
+
 
 
 // Products
@@ -125,7 +126,7 @@ export const addOrder: RequestHandler = async (req, res, next) => {
                 _id: item._id
             }
         });
-        const shippingPrice = shipmentMethod === 'Deliver' ? process.env.SHIPMENT_COST : 0;
+        const shippingPrice = shipmentMethod === 'Deliver' ? parseInt(process.env.SHIPMENT_COST) : 0;
         const itemsPrice = orderItems.reduce(
             (acc, item) => acc + (item.price! * item.qnty), 0
         );
@@ -183,7 +184,7 @@ export const getOrderById: RequestHandler = async (req, res, next) => {
 }
 
 // @desc user pay order
-// @path POST /api/orders/:orderId/pay
+// @path POST /api/orders/:orderId/
 // @access /private
 export const payOrder: RequestHandler = async (req, res, next) => {
     const errorResult = validationResult(req);
@@ -197,56 +198,18 @@ export const payOrder: RequestHandler = async (req, res, next) => {
             res.status(400)
             return next(Error("order not found"));
         }
-
-        const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] | undefined = order?.items.map(e => {
-            return {
-                price_data: {
-                    currency: process.env.CURRENCY,
-                    product_data: {
-                        name: e.name,
-                        images: [e.image]
-                    },
-                    unit_amount: e.price * 100,
-                },
-                quantity: e.qnty
-            }
-        });
-
-        // adding shipment cost to total
-        if (order.shipmentMethod === 'Deliver') {
-            line_items.push({
-                price_data: {
-                    currency: process.env.CURRENCY,
-                    product_data: {
-                        name: "Shipment Cost",
-                    },
-                    unit_amount: process.env.SHIPMENT_COST * 100,
-                },
-                quantity: 1,
-            });
+        if (order.paymentMethod === "Stripe") {
+            stripePay(req, res, next, order);
         }
-
-        //creatring the base url
-        let base_url = (process.env.NODE_ENV === "development") ? "http://" + req.hostname + ":" + process.env.PORT : "https://" + req.hostname;
-        const url_success = base_url + "/api/orders/stripe/result/?sucess=true";
-        const url_cancel = base_url + "/api/orders/stripe/result/?canceled=true";
-
-        // TODO:
-        // - see the invoice for stripe
-        const session = await stripe.checkout.sessions.create({
-            client_reference_id: order?._id.toString(),
-            line_items,
-            mode: 'payment',
-            currency: process.env.CURRENCY,
-            success_url: url_success,
-            cancel_url: url_cancel,
-            metadata: {
-                order_id: `${order._id}`,
-                user: `${req.user?._id}`,
-            },
-        });
-        res.redirect(303, session.url!);
+        else if (order.paymentMethod === "Chargily") {
+            chargilyPay(req, res, next, order);
+        }
+        else {
+            // paymentMethod: store, shipmentMethod: Hand (the admin should update the order to be paid in this case)
+            res.status(400).json({ paymentMethod: order.paymentMethod, shipmentMethod: order.shipmentMethod, message: "you can't pay it online" });
+        }
     } catch (error) {
+        console.log(error);
         next(error);
     }
 }

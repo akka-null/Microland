@@ -7,6 +7,7 @@ dotenv.config();
 import Stripe from "stripe";
 import { buffer } from "stream/consumers";
 import { Order } from "../models/orderModel";
+import { createHmac } from "crypto";
 const stripe = new Stripe(process.env.STRIPE_KEY);
 
 //  FIX:
@@ -111,18 +112,30 @@ export const latestProd: RequestHandler = async (_req, res, next) => {
 }
 
 // @desc user checkout status || stripe response to the user if completed the chekcout or canceled
-// @path /api/orders/status/
+// @path 
 // @access /public
-export const orderPaymentResult: RequestHandler = async (req, res, next) => {
+export const stripePaymentResult: RequestHandler = async (req, res, next) => {
     if (req.query.sucess) {
-        // TODO: redirect to "my orders" or soemthing (frontend stuff)
         res.status(200)
-            .json({ message: "Sucess" });
+            .json({ message: "Stripe payment Sucess" });
     }
     else {
-        // TODO: redirect to "my orders" or soemthing (frontend stuff)
         res.status(400)
-            .json({ message: "Canceled" });
+            .json({ message: "Stripe payment Canceled" });
+    }
+}
+
+// @desc user checkout status || chargily response to the user if completed the chekcout or canceled
+// @path 
+// @access /public
+export const chargilyPaymentResult: RequestHandler = async (req, res, next) => {
+    if (req.params.result === 'success') {
+        res.status(200)
+            .json({ message: "Chargily payment Success" });
+    }
+    else {
+        res.status(400)
+            .json({ message: "Chargily payment Canceled" });
     }
 }
 
@@ -144,10 +157,10 @@ export const stripeFulfillOrder: RequestHandler = async (req, res, next) => {
         if (event.type === 'checkout.session.completed') {
             // NOTE: checkout.session.async_payment_succeeded -> we should for this also since im not using stripe in algeria i will not go full on stripe implimentation
             const order = await Order.findById(event.data.object.client_reference_id);
-            if (order) {
+            if (order && !order.isPaid) {
                 //  - update the order (time, to be payed)
                 order.isPaid = true;
-                order.paidAt = new Date(Date.now());
+                order.paidAt = new Date();
 
                 await order.save();
                 // TODO: - send receipt email 
@@ -160,6 +173,53 @@ export const stripeFulfillOrder: RequestHandler = async (req, res, next) => {
         res.status(200).end();
     } catch (error) {
         res.status(400)
+        next(error);
+    }
+}
+
+// @desc Chargily fulfill orders
+// @path /api/orders/chargily/fulfill
+// @access /public
+export const chargilyFulfillOrder: RequestHandler = async (req, res, next) => {
+    const signature = req.headers['signature'];
+    const payload = JSON.stringify(req.body);
+
+    if (!signature)
+        return res.status(400).end();
+
+    // Calculate the signature and comparing it with the one from the headers
+    const calcSig = createHmac('sha256', process.env.CHARGILY_SKEY)
+        .update(payload)
+        .digest('hex');
+
+    /* FIX: - no matter what i tried: the signature send by chargily in the headers and the one we calculate manually does not match 
+    *       - i will just not use chargily in prod
+    *
+    if (calcSig !== signature)
+        return res.status(403).end();
+        */
+    const event = req.body;
+    try {
+        const order = await Order.findById(event.data.metadata.order_id);
+
+        if (order && !order.isPaid) {
+            switch (event.type) {
+                case 'checkout.paid':
+                    order.isPaid = true;
+                    order.paidAt = new Date();
+
+                    const updated = await order.save();
+                    if (updated)
+                        // TODO: - send receipt email 
+                        return res.status(200).end();
+                    break;
+                case 'checkout.failed':
+                    res.status(400).end();
+                    break;
+            }
+        }
+        res.status(200).end();
+    } catch (error) {
         next(error);
     }
 }

@@ -19,6 +19,13 @@ router.get("/products/:productType/:productCategory", match, shopController.getP
 router.get("/top", shopController.topProds);
 router.get("/latest", shopController.latestProd);
 
-router.get("/orders/stripe/result", shopController.orderPaymentResult);
+router.get("/orders/stripe/result", shopController.stripePaymentResult);
+router.get("/orders/chargily/result/:result", shopController.chargilyPaymentResult);
+
+// stripe webhook
+// in app.ts
+
+// chargily webhook
+router.post("/orders/chargily/fulfill", shopController.chargilyFulfillOrder);
 
 export default router;
