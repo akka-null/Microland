@@ -162,6 +162,12 @@ export const deliveredOrder: RequestHandler = async (req, res, next) => {
             order.isDelivered = true;
             order.deliveredAt = new Date();
 
+            // clien pays on store and takes the products
+            if (!order.isPaid) {
+                order.isPaid = true;
+                order.paidAt = new Date();
+            }
+
             const updatedOrder = await order.save();
             res.json(updatedOrder);
         }
