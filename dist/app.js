@@ -25,7 +25,7 @@ const PORT = process.env.PORT || 3050;
 const app = (0, express_1.default)();
 app.use((0, compression_1.default)());
 app.use((0, helmet_1.default)());
-app.use((0, cors_1.default)({ credentials: true }));
+app.use((0, cors_1.default)({ origin: '*', credentials: true }));
 app.use((0, morgan_1.default)("dev"));
 app.use("/api/orders/stripe/fulfill", (0, body_parser_1.raw)({ type: 'application/json' }), shopController_1.stripeFulfillOrder);
 app.use((0, body_parser_1.urlencoded)({ extended: false }));
