@@ -134,7 +134,7 @@ export const forgetPass: RequestHandler = async (req, res, next) => {
             mailOptions.html = `Please click the link to update your password: <a = href="${url}">${url}</a>`;
 
             // Send the email
-            const info = transporter.sendMail(mailOptions);
+            const info = await transporter.sendMail(mailOptions);
             res.json({
                 msg: `${user.username} please check you email inbox or spams, we sent a password recovery link to you `,
                 info: info
