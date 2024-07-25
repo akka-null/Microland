@@ -38,7 +38,7 @@ export const register: RequestHandler = async (req, res, next) => {
         // mailOptions.html = `Please click the link to update your password: <a = href="${url}">${url}</a>`; from the confirmation
         //
         // Send the email
-        transporter.sendMail(mailOptions);
+        await transporter.sendMail(mailOptions);
         res.json({ msg: "Email sent successfully, Pleas confirm your account, check your inbox or spams!" });
     } catch (error) {
         next(error);
