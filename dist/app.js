@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const mongoose_1 = __importDefault(require("mongoose"));
+const swagger_1 = __importDefault(require("./utils/swagger"));
 const compression_1 = __importDefault(require("compression"));
 const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
@@ -33,6 +34,7 @@ app.use((0, cookie_parser_1.default)());
 app.get("/", (req, res, _next) => {
     res.status(200).json({ msg: "hey akka", "@": `${req.hostname}` });
 });
+(0, swagger_1.default)(app, PORT);
 app.use("/api", adminRoute_1.default);
 app.use("/api", userRoute_1.default);
 app.use("/api", shopRoute_1.default);

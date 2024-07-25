@@ -32,6 +32,7 @@ const shopController = __importStar(require("../controllers/shopController"));
 const typeMatchCategory_1 = __importDefault(require("../middlewares/typeMatchCategory"));
 const express_validator_1 = require("express-validator");
 router.get("/products", shopController.getProducts);
+router.get("/search", shopController.search);
 router.get("/product/:prodId", (0, express_validator_1.param)("prodId").isMongoId().withMessage("invalid ID"), shopController.getProductById);
 router.get("/products/:productType", shopController.getProductByType);
 router.get("/products/:productType/:productCategory", typeMatchCategory_1.default, shopController.getProductByCategory);

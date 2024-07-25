@@ -5,7 +5,21 @@ import match from "../middlewares/typeMatchCategory";
 import { param } from "express-validator";
 
 // get all products
+/**
+ * @openapi
+ *
+ * /api/products:
+ *   get:
+ *     produces:
+ *       - application/json
+ */
 router.get("/products", shopController.getProducts);
+
+// search
+router.get("/search", shopController.search);
+// TODO: navigation
+// router.get("/nav", shopController.nav);
+
 
 // get product by id
 router.get("/product/:prodId",

@@ -18,7 +18,7 @@ exports.transporter = transporter;
 let mailOptions = {
     from: process.env.EMAIL_SENDER,
     to: "",
-    subject: "Email Confirmation",
+    subject: "",
     html: ``,
 };
 exports.mailOptions = mailOptions;

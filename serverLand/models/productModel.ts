@@ -3,6 +3,70 @@
 //      * use typescript here
 import { ObjectId, Schema, model } from "mongoose";
 
+/**
+* @swagger
+*   components:
+*     schemas: 
+*       review:
+*         type: object
+*         required:
+*           - username
+*           - email
+*           - _id
+*           - comment
+*           - rate
+*         properties:
+*           username: string
+*           email:
+*             type: string
+*           _id:
+*             type: string
+*           comment:
+*             type: string
+*           rate:
+*             type: number
+*             example: 1
+*       product:
+*         type: object
+*         required:
+*           - username
+*           - email
+*           - _id
+*           - comment
+*           - rate
+*         properties:
+*           title:
+*             type: string
+*           brand:
+*             type: string
+*           price:
+*             type: string
+*           quantity:
+*             type: string
+*           description:
+*             type: number
+*           reviews:
+*             $ref: '#/components/schemas/review'
+*           rating:
+*             type: number
+*           reviewsCount:
+*             type: number
+*           images:
+*             type: number
+*           condition:
+*             type: number
+*           discount:
+*             type: number
+*           discontFactor:
+*             type: number
+*           hidden:
+*             type: number
+*           type:
+*             type: number
+*           category:
+*             type: number
+*
+*/
 export interface IReview {
     username: string;
     email: string;
@@ -111,7 +175,9 @@ const productSchema = new Schema<IProduct>({
         }, */
         default: 0,
     },
-    hidden: Boolean,
+    hidden: {
+        type: Boolean
+    },
     type: {
         type: String,
         enum: ['Computer', 'Part', 'Peripheral'],
@@ -145,6 +211,8 @@ productSchema.path('type').validate(function(value) {
 
 }, "Type does not match Category");
 
+// the text index  will enable us to search 
+productSchema.index({title: 'text'});
 
 export const Product = model<IProduct>("Product", productSchema);
 

@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
 let mailOptions = {
   from: process.env.EMAIL_SENDER,
   to: "",
-  subject: "Email Confirmation",
+  subject: "",
   html: ``,
 };
 export { transporter, mailOptions };

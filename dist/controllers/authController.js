@@ -28,9 +28,10 @@ const register = async (req, res, next) => {
         const base_url = (process.env.NODE_ENV === "development") ? "http://" + req.hostname + ":" + process.env.PORT : "https://" + req.hostname;
         const url = `${base_url}/email/${emailToken}`;
         sendMail_1.mailOptions["to"] = user.email;
-        sendMail_1.mailOptions.html = `Please click the link to confirm your email: <a href="${url}">${url}</a>`;
+        sendMail_1.mailOptions.subject = "Email Confirmation";
+        sendMail_1.mailOptions.html = `Please click the link to confirm your email: <a = href="${url}">${url}</a>`;
         sendMail_1.transporter.sendMail(sendMail_1.mailOptions);
-        res.send("Email sent successfully, Pleas confirm your account, check your inbox or spams!");
+        res.json({ msg: "Email sent successfully, Pleas confirm your account, check your inbox or spams!" });
     }
     catch (error) {
         next(error);
@@ -103,6 +104,7 @@ const forgetPass = async (req, res, next) => {
             const base_url = (process.env.NODE_ENV === "development") ? "http://" + req.hostname + ":" + process.env.PORT : "https://" + req.hostname;
             const url = `${base_url}/reset/${passToken}`;
             sendMail_1.mailOptions["to"] = user.email;
+            sendMail_1.mailOptions.subject = "Password Reset";
             sendMail_1.mailOptions.html = `Please click the link to update your password: <a = href="${url}">${url}</a>`;
             const info = sendMail_1.transporter.sendMail(sendMail_1.mailOptions);
             res.json({

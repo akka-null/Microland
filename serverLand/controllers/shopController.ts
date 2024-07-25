@@ -21,14 +21,42 @@ export const getProducts: RequestHandler = async (req, res, next) => {
     const page = (req.query.page && +req.query.page >= 1) ? +req.query.page : 1;
     try {
         const total = await Product.countDocuments();
-        const prods = await Product.find().skip((page - 1) * itemPerPage).limit(itemPerPage);
-        if (!prods) {
+        const products = await Product.find().skip((page - 1) * itemPerPage).limit(itemPerPage);
+        if (!products) {
             res.status(404);
             return next(Error('No Product Was Found'));
         }
-        res.json({ page, total, pages: Math.ceil(total / itemPerPage), prods });
+        res.json({ page, total, pages: Math.ceil(total / itemPerPage), products });
     } catch (error) {
         next(error);
+    }
+}
+// for  navigation
+export const nav: RequestHandler = async (req, res, next) => {
+
+    try {
+        // const array: {type: string, category: string}[] = [];
+
+        const result = await Product.find().select('-brand -hidden -title -_id -price -quantity -description -reviewsCount -images -rating -condition -discount -discountFactor -reviews -__v -createdAt -updatedAt')
+        res.send(result);
+        // res.send(array);
+    } catch (error) {
+        next(error)
+    }
+}
+// search
+export const search: RequestHandler = async (req, res, next) => {
+    const term = req.query.term
+    try {
+        const product = await Product.find({ $text: { $search: `${term}` } })
+        if (product.length === 0) {
+            res.status(404);
+            return next(Error('No Product Was Found'));
+        }
+        res.json({ product });
+
+    } catch (error) {
+        next(error)
     }
 }
 
@@ -40,8 +68,12 @@ export const getProductById: RequestHandler = async (req, res, next) => {
         return next(Error(errorResult.array()[0]?.msg));
     }
     try {
-        const prod = await Product.findById({ _id: req.params.prodId });
-        res.json({ prod });
+        const product = await Product.findById({ _id: req.params.prodId });
+        if (!product) {
+            res.status(404);
+            return next(Error('No Product Was Found'));
+        }
+        res.json({ product });
     } catch (error) {
         next(error);
     }
@@ -55,12 +87,12 @@ export const getProductByType: RequestHandler = async (req, res, next) => {
     const itemPerPage = req.query.itemPerPage ? +req.query.itemPerPage : process.env.ITEM_PER_PAGE;
     try {
         const total = await Product.countDocuments({ type: productType });
-        const prod = await Product.find({ type: productType }).skip((page - 1) * itemPerPage).limit(itemPerPage);;
-        if (!prod) {
+        const products = await Product.find({ type: productType }).skip((page - 1) * itemPerPage).limit(itemPerPage);;
+        if (!products) {
             res.status(404);
             return next(Error('No Product Was Found'));
         }
-        res.json({ page, total, pages: Math.ceil(total / itemPerPage), prod });
+        res.json({ page, total, pages: Math.ceil(total / itemPerPage), products });
     } catch (error) {
         next(error);
     }
@@ -74,12 +106,12 @@ export const getProductByCategory: RequestHandler = async (req, res, next) => {
     try {
 
         const total = await Product.countDocuments({ type: productType, category: productCategory });
-        const prod = await Product.find({ type: productType, category: productCategory }).skip((page - 1) * itemPerPage).limit(itemPerPage);
-        if (!prod) {
+        const products = await Product.find({ type: productType, category: productCategory }).skip((page - 1) * itemPerPage).limit(itemPerPage);
+        if (!products) {
             res.status(404);
             return next(Error('No Product Was Found'));
         }
-        res.json({ page, total, pages: Math.ceil(total / itemPerPage), prod });
+        res.json({ page, total, pages: Math.ceil(total / itemPerPage), products });
     } catch (error) {
         next(error);
     }
@@ -91,8 +123,8 @@ export const getProductByCategory: RequestHandler = async (req, res, next) => {
 // @access /public
 export const topProds: RequestHandler = async (_req, res, next) => {
     try {
-        const top = await Product.find().sort({ rating: -1 }).limit(5);
-        res.json({ top });
+        const products = await Product.find().sort({ rating: -1 }).limit(5);
+        res.json({ products });
     } catch (error) {
         next(error)
     }
@@ -103,8 +135,8 @@ export const topProds: RequestHandler = async (_req, res, next) => {
 // @access /public
 export const latestProd: RequestHandler = async (_req, res, next) => {
     try {
-        const latest = await Product.find().sort({ createdAt: -1 }).limit(5);
-        res.json({ latest });
+        const products = await Product.find().sort({ createdAt: -1 }).limit(5);
+        res.json({ products });
 
     } catch (error) {
         next(error)

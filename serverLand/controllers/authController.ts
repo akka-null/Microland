@@ -33,11 +33,13 @@ export const register: RequestHandler = async (req, res, next) => {
         const url = `${base_url}/email/${emailToken}`;
 
         mailOptions["to"] = user.email;
-        mailOptions.html = `Please click the link to confirm your email: <a href="${url}">${url}</a>`;
+        mailOptions.subject = "Email Confirmation";
+        mailOptions.html = `Please click the link to confirm your email: <a = href="${url}">${url}</a>`;
+        // mailOptions.html = `Please click the link to update your password: <a = href="${url}">${url}</a>`; from the confirmation
         //
         // Send the email
         transporter.sendMail(mailOptions);
-        res.send("Email sent successfully, Pleas confirm your account, check your inbox or spams!");
+        res.json({ msg: "Email sent successfully, Pleas confirm your account, check your inbox or spams!" });
     } catch (error) {
         next(error);
     }
@@ -90,7 +92,7 @@ export const login: RequestHandler = async (req, res, next) => {
             res.cookie("loginCookie", token, {
                 httpOnly: true,
                 sameSite: "strict", // prevent csrf attacks
-                secure: process.env.NODE_ENV !== "development", 
+                secure: process.env.NODE_ENV !== "development",
                 // NOTE: * if you don't set the maxAge it will be a session coookie
                 maxAge: 1000 * 60 * 30, // ms ==> 30 min
             })
@@ -128,6 +130,7 @@ export const forgetPass: RequestHandler = async (req, res, next) => {
             const url = `${base_url}/reset/${passToken}`;
 
             mailOptions["to"] = user.email;
+            mailOptions.subject = "Password Reset";
             mailOptions.html = `Please click the link to update your password: <a = href="${url}">${url}</a>`;
 
             // Send the email

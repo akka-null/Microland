@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import swaggerDocs from "./utils/swagger";
 
 // TODO: must
 //          * chagily for algeria
@@ -27,6 +28,8 @@ import notFound from "./middlewares/notFound";
 import { stripeFulfillOrder } from "./controllers/shopController";
 import errorHandler from "./middlewares/errorhandler";
 
+
+
 dotenv.config();
 const PORT = process.env.PORT! || 3050;
 const app = express();
@@ -41,6 +44,7 @@ app.use(helmet());
 //       * learn more about cors
 // app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(cors({ credentials: true }));
+// app.use(cors());
 app.use(logger("dev"));
 
 // NOTE: stripe fulfill the order
@@ -56,12 +60,14 @@ app.get("/", (req, res, _next) => {
     res.status(200).json({ msg: "hey akka", "@": `${req.hostname}` });
 });
 
+swaggerDocs(app, PORT);
 app.use("/api", adminRoute);
 app.use("/api", userRoute);
 app.use("/api", shopRoute);
 app.use("/api", authRoute);
 app.use(notFound);
 app.use(errorHandler);
+
 
 mongoose
     .connect(process.env.URI!)

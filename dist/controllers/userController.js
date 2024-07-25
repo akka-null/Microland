@@ -54,6 +54,7 @@ const myProfile = async (req, res) => {
         name: req.user?.username,
         email: req.user?.email,
         verified: req.user?.emailVerified,
+        admin: req.user?.isAdmin,
     });
 };
 exports.myProfile = myProfile;

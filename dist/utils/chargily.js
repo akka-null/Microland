@@ -13,7 +13,7 @@ const client = new chargily_pay_1.ChargilyClient({
 });
 const chargilyPay = async (req, res, next, order) => {
     try {
-        let base_url = (process.env.NODE_ENV === "product") ? "http://" + req.hostname + ":" + process.env.PORT : "https://" + req.hostname;
+        let base_url = (process.env.NODE_ENV === "development") ? "http://" + req.hostname + ":" + process.env.PORT : "https://" + req.hostname;
         const url_success = base_url + "/api/orders/chargily/result/success";
         const url_cancel = base_url + "/api/orders/chargily/result/failure";
         const checkout = await client.createCheckout({

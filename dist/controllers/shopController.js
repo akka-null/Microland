@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.chargilyFulfillOrder = exports.stripeFulfillOrder = exports.chargilyPaymentResult = exports.stripePaymentResult = exports.latestProd = exports.topProds = exports.getProductByCategory = exports.getProductByType = exports.getProductById = exports.getProducts = void 0;
+exports.chargilyFulfillOrder = exports.stripeFulfillOrder = exports.chargilyPaymentResult = exports.stripePaymentResult = exports.latestProd = exports.topProds = exports.getProductByCategory = exports.getProductByType = exports.getProductById = exports.search = exports.nav = exports.getProducts = void 0;
 const productModel_1 = require("../models/productModel");
 const dotenv_1 = __importDefault(require("dotenv"));
 const express_validator_1 = require("express-validator");
@@ -17,18 +17,43 @@ const getProducts = async (req, res, next) => {
     const page = (req.query.page && +req.query.page >= 1) ? +req.query.page : 1;
     try {
         const total = await productModel_1.Product.countDocuments();
-        const prods = await productModel_1.Product.find().skip((page - 1) * itemPerPage).limit(itemPerPage);
-        if (!prods) {
+        const products = await productModel_1.Product.find().skip((page - 1) * itemPerPage).limit(itemPerPage);
+        if (!products) {
             res.status(404);
             return next(Error('No Product Was Found'));
         }
-        res.json({ page, total, pages: Math.ceil(total / itemPerPage), prods });
+        res.json({ page, total, pages: Math.ceil(total / itemPerPage), products });
     }
     catch (error) {
         next(error);
     }
 };
 exports.getProducts = getProducts;
+const nav = async (req, res, next) => {
+    try {
+        const result = await productModel_1.Product.find().select('-brand -hidden -title -_id -price -quantity -description -reviewsCount -images -rating -condition -discount -discountFactor -reviews -__v -createdAt -updatedAt');
+        res.send(result);
+    }
+    catch (error) {
+        next(error);
+    }
+};
+exports.nav = nav;
+const search = async (req, res, next) => {
+    const term = req.query.term;
+    try {
+        const product = await productModel_1.Product.find({ $text: { $search: `${term}` } });
+        if (product.length === 0) {
+            res.status(404);
+            return next(Error('No Product Was Found'));
+        }
+        res.json({ product });
+    }
+    catch (error) {
+        next(error);
+    }
+};
+exports.search = search;
 const getProductById = async (req, res, next) => {
     const errorResult = (0, express_validator_1.validationResult)(req);
     if (!errorResult.isEmpty()) {
@@ -36,8 +61,12 @@ const getProductById = async (req, res, next) => {
         return next(Error(errorResult.array()[0]?.msg));
     }
     try {
-        const prod = await productModel_1.Product.findById({ _id: req.params.prodId });
-        res.json({ prod });
+        const product = await productModel_1.Product.findById({ _id: req.params.prodId });
+        if (!product) {
+            res.status(404);
+            return next(Error('No Product Was Found'));
+        }
+        res.json({ product });
     }
     catch (error) {
         next(error);
@@ -50,13 +79,13 @@ const getProductByType = async (req, res, next) => {
     const itemPerPage = req.query.itemPerPage ? +req.query.itemPerPage : process.env.ITEM_PER_PAGE;
     try {
         const total = await productModel_1.Product.countDocuments({ type: productType });
-        const prod = await productModel_1.Product.find({ type: productType }).skip((page - 1) * itemPerPage).limit(itemPerPage);
+        const products = await productModel_1.Product.find({ type: productType }).skip((page - 1) * itemPerPage).limit(itemPerPage);
         ;
-        if (!prod) {
+        if (!products) {
             res.status(404);
             return next(Error('No Product Was Found'));
         }
-        res.json({ page, total, pages: Math.ceil(total / itemPerPage), prod });
+        res.json({ page, total, pages: Math.ceil(total / itemPerPage), products });
     }
     catch (error) {
         next(error);
@@ -69,12 +98,12 @@ const getProductByCategory = async (req, res, next) => {
     const itemPerPage = req.query.itemPerPage ? +req.query.itemPerPage : process.env.ITEM_PER_PAGE;
     try {
         const total = await productModel_1.Product.countDocuments({ type: productType, category: productCategory });
-        const prod = await productModel_1.Product.find({ type: productType, category: productCategory }).skip((page - 1) * itemPerPage).limit(itemPerPage);
-        if (!prod) {
+        const products = await productModel_1.Product.find({ type: productType, category: productCategory }).skip((page - 1) * itemPerPage).limit(itemPerPage);
+        if (!products) {
             res.status(404);
             return next(Error('No Product Was Found'));
         }
-        res.json({ page, total, pages: Math.ceil(total / itemPerPage), prod });
+        res.json({ page, total, pages: Math.ceil(total / itemPerPage), products });
     }
     catch (error) {
         next(error);
@@ -83,8 +112,8 @@ const getProductByCategory = async (req, res, next) => {
 exports.getProductByCategory = getProductByCategory;
 const topProds = async (_req, res, next) => {
     try {
-        const top = await productModel_1.Product.find().sort({ rating: -1 }).limit(5);
-        res.json({ top });
+        const products = await productModel_1.Product.find().sort({ rating: -1 }).limit(5);
+        res.json({ products });
     }
     catch (error) {
         next(error);
@@ -93,8 +122,8 @@ const topProds = async (_req, res, next) => {
 exports.topProds = topProds;
 const latestProd = async (_req, res, next) => {
     try {
-        const latest = await productModel_1.Product.find().sort({ createdAt: -1 }).limit(5);
-        res.json({ latest });
+        const products = await productModel_1.Product.find().sort({ createdAt: -1 }).limit(5);
+        res.json({ products });
     }
     catch (error) {
         next(error);

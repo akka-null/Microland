@@ -74,7 +74,9 @@ const productSchema = new mongoose_1.Schema({
         type: Number,
         default: 0,
     },
-    hidden: Boolean,
+    hidden: {
+        type: Boolean
+    },
     type: {
         type: String,
         enum: ['Computer', 'Part', 'Peripheral'],
@@ -99,5 +101,6 @@ productSchema.path('type').validate(function (value) {
         return false;
     }
 }, "Type does not match Category");
+productSchema.index({ title: 'text' });
 exports.Product = (0, mongoose_1.model)("Product", productSchema);
 //# sourceMappingURL=productModel.js.map
