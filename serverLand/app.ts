@@ -43,8 +43,8 @@ app.use(helmet());
 // TODO: * read if you should use cors like this or make our api be consumed only the frontend app
 //       * learn more about cors
 // app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
-app.use(cors({ origin: '*', credentials: true }));
-// app.use(cors({ credentials: true }));
+// app.use(cors({ origin: '*', credentials: true }));
+app.use(cors({ credentials: true }));
 // app.use(cors());
 app.use(logger("dev"));
 
