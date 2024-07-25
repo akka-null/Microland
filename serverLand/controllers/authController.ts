@@ -135,12 +135,10 @@ export const forgetPass: RequestHandler = async (req, res, next) => {
 
             // Send the email
             const info = transporter.sendMail(mailOptions);
-            console.log(req.hostname);
-            console.log(user.email);
-            res.json( info );
-            // res.json({
-            //     msg: `${user.username} please check you email inbox or spams, we sent a password recovery link to you `,
-            // });
+            res.json({
+                msg: `${user.username} please check you email inbox or spams, we sent a password recovery link to you `,
+                info: info
+            });
         }
         else {
             res.status(400)
