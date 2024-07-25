@@ -107,7 +107,9 @@ const forgetPass = async (req, res, next) => {
             sendMail_1.mailOptions.subject = "Password Reset";
             sendMail_1.mailOptions.html = `Please click the link to update your password: <a = href="${url}">${url}</a>`;
             const info = sendMail_1.transporter.sendMail(sendMail_1.mailOptions);
-            res.json({ info });
+            console.log(req.hostname);
+            console.log(user.email);
+            res.json(info);
         }
         else {
             res.status(400);
