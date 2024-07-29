@@ -41,13 +41,16 @@ const nav = async (req, res, next) => {
 exports.nav = nav;
 const search = async (req, res, next) => {
     const term = req.query.term;
+    const page = (req.query.page && +req.query.page >= 1) ? +req.query.page : 1;
+    const itemPerPage = req.query.itemPerPage ? +req.query.itemPerPage : process.env.ITEM_PER_PAGE;
     try {
-        const product = await productModel_1.Product.find({ $text: { $search: `${term}` } });
-        if (product.length === 0) {
+        const total = await productModel_1.Product.countDocuments({ $text: { $search: `${term}` } });
+        const products = await productModel_1.Product.find({ $text: { $search: `${term}` } }).skip((page - 1) * itemPerPage).limit(itemPerPage);
+        if (!products) {
             res.status(404);
             return next(Error('No Product Was Found'));
         }
-        res.json({ product });
+        res.json({ page, total, pages: Math.ceil(total / itemPerPage), products });
     }
     catch (error) {
         next(error);

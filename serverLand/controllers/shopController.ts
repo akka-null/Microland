@@ -47,14 +47,18 @@ export const nav: RequestHandler = async (req, res, next) => {
 // search
 export const search: RequestHandler = async (req, res, next) => {
     const term = req.query.term
+    const page = (req.query.page && +req.query.page >= 1) ? +req.query.page : 1;
+    const itemPerPage = req.query.itemPerPage ? +req.query.itemPerPage : process.env.ITEM_PER_PAGE;
+
     try {
-        const product = await Product.find({ $text: { $search: `${term}` } })
-        if (product.length === 0) {
+        const total = await Product.countDocuments({ $text: { $search: `${term}` } })
+        const products = await Product.find({ $text: { $search: `${term}` } }).skip((page - 1) * itemPerPage).limit(itemPerPage);
+
+        if (!products) {
             res.status(404);
             return next(Error('No Product Was Found'));
         }
-        res.json({ product });
-
+        res.json({ page, total, pages: Math.ceil(total / itemPerPage), products });
     } catch (error) {
         next(error)
     }
@@ -88,6 +92,7 @@ export const getProductByType: RequestHandler = async (req, res, next) => {
     try {
         const total = await Product.countDocuments({ type: productType });
         const products = await Product.find({ type: productType }).skip((page - 1) * itemPerPage).limit(itemPerPage);;
+
         if (!products) {
             res.status(404);
             return next(Error('No Product Was Found'));

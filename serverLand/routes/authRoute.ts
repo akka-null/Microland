@@ -3,6 +3,7 @@ import { body } from "express-validator";
 import * as authController from "../controllers/authController";
 import { User } from "../models/userModel";
 import isLoggedIn from "../middlewares/loggedIn";
+import isVerified from "../middlewares/isVerified";
 const router = Router();
 
 // signup  
@@ -52,7 +53,7 @@ router.post(
 );
 
 // email validation
-router.get("/email/:emailToken", authController.Emailvalidation);
+router.post("/email/:emailToken", authController.Emailvalidation);
 
 // logout || signout
 router.post("/logout", isLoggedIn, authController.logout);

@@ -34,7 +34,7 @@ export const register: RequestHandler = async (req, res, next) => {
 
         mailOptions["to"] = user.email;
         mailOptions.subject = "Email Confirmation";
-        mailOptions.html = `Please click the link to confirm your email: <a = href="${url}">${url}</a>`;
+        mailOptions.html = `Please click the link to confirm your email: <a href="${url}">${url}</a>`;
         // mailOptions.html = `Please click the link to update your password: <a = href="${url}">${url}</a>`; from the confirmation
         //
         // Send the email
@@ -53,7 +53,7 @@ export const Emailvalidation: RequestHandler = async (req, res, next) => {
         const decoded = jwt.verify(req.params.emailToken!, process.env.EMAIL_SECRET!) as JwtPayload;
         await User.updateOne({ _id: decoded.userId }, { emailVerified: true });
 
-        res.status(200).json("your email has been confirmed ");
+        res.status(200).json({ msg: "your email has been confirmed " });
     } catch (error) {
         res.status(400);
         next(Error('Invalid or expired token'));
@@ -131,10 +131,10 @@ export const forgetPass: RequestHandler = async (req, res, next) => {
 
             mailOptions["to"] = user.email;
             mailOptions.subject = "Password Reset";
-            mailOptions.html = `Please click the link to update your password: <a = href="${url}">${url}</a>`;
+            mailOptions.html = `Please click the link to update your password: <a href="${url}">${url}</a>`;
 
             // Send the email
-             await transporter.sendMail(mailOptions);
+            await transporter.sendMail(mailOptions);
             res.json({
                 msg: `${user.username} please check you email inbox or spams, we sent a password recovery link to you `,
             });

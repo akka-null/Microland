@@ -29,8 +29,8 @@ const register = async (req, res, next) => {
         const url = `${base_url}/email/${emailToken}`;
         sendMail_1.mailOptions["to"] = user.email;
         sendMail_1.mailOptions.subject = "Email Confirmation";
-        sendMail_1.mailOptions.html = `Please click the link to confirm your email: <a = href="${url}">${url}</a>`;
-        sendMail_1.transporter.sendMail(sendMail_1.mailOptions);
+        sendMail_1.mailOptions.html = `Please click the link to confirm your email: <a href="${url}">${url}</a>`;
+        await sendMail_1.transporter.sendMail(sendMail_1.mailOptions);
         res.json({ msg: "Email sent successfully, Pleas confirm your account, check your inbox or spams!" });
     }
     catch (error) {
@@ -42,7 +42,7 @@ const Emailvalidation = async (req, res, next) => {
     try {
         const decoded = jsonwebtoken_1.default.verify(req.params.emailToken, process.env.EMAIL_SECRET);
         await userModel_1.User.updateOne({ _id: decoded.userId }, { emailVerified: true });
-        res.status(200).json("your email has been confirmed ");
+        res.status(200).json({ msg: "your email has been confirmed " });
     }
     catch (error) {
         res.status(400);
@@ -105,7 +105,7 @@ const forgetPass = async (req, res, next) => {
             const url = `${base_url}/reset/${passToken}`;
             sendMail_1.mailOptions["to"] = user.email;
             sendMail_1.mailOptions.subject = "Password Reset";
-            sendMail_1.mailOptions.html = `Please click the link to update your password: <a = href="${url}">${url}</a>`;
+            sendMail_1.mailOptions.html = `Please click the link to update your password: <a href="${url}">${url}</a>`;
             await sendMail_1.transporter.sendMail(sendMail_1.mailOptions);
             res.json({
                 msg: `${user.username} please check you email inbox or spams, we sent a password recovery link to you `,

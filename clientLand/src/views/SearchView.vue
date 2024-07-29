@@ -6,7 +6,6 @@ import Card from '@/components/Card.vue'
 import Footer from '@/components/Footer.vue'
 import { productStore } from '../stores/products'
 import { authStore } from '../stores/auth'
-
 import {
   Pagination,
   PaginationEllipsis,
@@ -27,10 +26,10 @@ const auth = authStore()
 ref(store.products)
 
 onMounted(async () => {
-  store.getProducts(route.query.page | 1, store.itemPerPage)
+  store.search(route.params.term, 1, store.itemPerPage)
 })
 const goToPage = (page) => {
-  store.getProducts(page, store.itemPerPage)
+  store.search(route.params.term, page, store.itemPerPage)
 }
 </script>
 

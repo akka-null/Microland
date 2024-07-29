@@ -60,7 +60,7 @@ router.post("/login", (0, express_validator_1.body)("email")
     .escape()
     .isEmail()
     .withMessage("Please use a valid E-mail address"), (0, express_validator_1.body)("password").trim(), authController.login);
-router.get("/email/:emailToken", authController.Emailvalidation);
+router.post("/email/:emailToken", authController.Emailvalidation);
 router.post("/logout", loggedIn_1.default, authController.logout);
 router.post("/forget", (0, express_validator_1.body)("email")
     .trim()
