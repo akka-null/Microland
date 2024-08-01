@@ -3,8 +3,8 @@ import axios from 'axios'
 
 import { BASE_URL } from '@/constants'
 import { allowedNodeEnvironmentFlags } from 'process'
-axios.defaults.withCredentials = true
-;(async () => {
+axios.defaults.withCredentials = true;
+(async () => {
   try {
     await axios.get(`${BASE_URL}/api/user`)
   } catch (error) {
@@ -122,6 +122,21 @@ export const authStore = defineStore('user', {
           status: error.response.status
         }
       }
-    }
+    },
+    async DeleteMe(password: string) {
+        try {
+            const res = await axios.delete(`${BASE_URL}/api/user`, {data: { password}})
+            this.logOut();
+            return {
+                message: res.data.msg,
+                status: 200
+            }
+        } catch (error) {
+            return {
+                message: error.response.data.message,
+                status: error.response.status
+            }
+        }
+    },
   }
 })

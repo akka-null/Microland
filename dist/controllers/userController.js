@@ -68,7 +68,7 @@ const deleteMe = async (req, res, next) => {
         if (req.user && await (0, bcryptjs_1.compare)(password, req.user.password)) {
             const user = await userModel_1.User.findByIdAndDelete(req.user._id);
             res.clearCookie("loginCookie")
-                .json({ message: `${user} deleted` });
+                .json({ msg: `${req.user.username} been deleted` });
         }
         else {
             res.status(400);

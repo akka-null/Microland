@@ -12,9 +12,9 @@ const store = productStore()
 const searchQuery = ref('')
 
 const search = async () => {
-  // store.search(searchQuery.value, null, null);
   router.push({ name: 'Search', params: { term: searchQuery.value } })
-  // searchQuery.value = ''
+  store.search(searchQuery.value, null, null);
+  searchQuery.value = ''
 }
 </script>
 

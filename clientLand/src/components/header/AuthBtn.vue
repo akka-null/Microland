@@ -6,11 +6,8 @@ import { RouterLink } from 'vue-router'
 import { authStore } from '@/stores/auth'
 import { useToast } from '@/components/ui/toast/use-toast'
 import AddProduct from '@/components/AddProduct.vue'
+import { Button } from '@/components/ui/button'
 
-const { toast } = useToast()
-const auth = authStore()
-const router = useRouter()
-const route = useRoute()
 
 import {
   CreditCard,
@@ -28,7 +25,6 @@ import {
   PackagePlus,
 } from 'lucide-vue-next'
 
-import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -43,9 +39,23 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 
-// onMounted(() => {
-// auth.getUser();
-// })
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import DeleteMe from '@/components/header/menu/DeleteMe.vue'
+import UpdatePass from '@/components/header/menu/UpdatePass.vue'
+import UpdateMe from '@/components/header/menu/UpdateMe.vue'
+
+const { toast } = useToast()
+const auth = authStore()
+const router = useRouter()
+const route = useRoute()
 
 const logout = async () => {
   const res = await auth.logOut()
@@ -108,7 +118,11 @@ const logout = async () => {
 
         <DropdownMenuSeparator />
 
-        <AddProduct />
+        <!-- <AddProduct /> -->
+        <DropdownMenuItem @click="router.push({name: 'AddProduct'})">
+          <PackagePlus class="mr-2 h-4 w-4" />
+          <span>Add Products</span>
+          </DropdownMenuItem>
 
 
           <DropdownMenuItem>
@@ -152,16 +166,16 @@ const logout = async () => {
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent>
-                <DropdownMenuItem  class="text-blue-500">
-                  <UserCog class="mr-2 h-4 w-4" />
-                  <span>Update Profile</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem class="text-red-500">
-                  <!-- <MessageSquare class="mr-2 h-4 w-4" /> -->
-                  <UserX class="mr-2 h-4 w-4" />
-                  <span>Delete Profile</span>
-                </DropdownMenuItem>
+
+
+                <UpdatePass />
                 <DropdownMenuSeparator />
+                <UpdateMe />
+                <DropdownMenuSeparator />
+                <DeleteMe />
+
+
+
               </DropdownMenuSubContent>
             </DropdownMenuPortal>
           </DropdownMenuSub>

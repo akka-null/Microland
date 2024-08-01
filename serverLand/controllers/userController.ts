@@ -86,7 +86,7 @@ export const deleteMe: RequestHandler = async (req, res, next) => {
 
             const user = await User.findByIdAndDelete(req.user._id);
             res.clearCookie("loginCookie")
-                .json({ message: `${user} deleted` });
+                .json({ msg: `${req.user.username} been deleted` });
         }
         else {
             res.status(400);
